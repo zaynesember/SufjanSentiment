@@ -1,0 +1,89 @@
+---
+title: "Sufjan Sentiment"
+author: |
+  | Zayne Sember <zsember@ucsd.edu>
+output: html_notebook
+---
+
+```{r, message=FALSE}
+library(tm)
+library(SnowballC)
+library(wordcloud)
+library(RColorBrewer)
+library(syuzhet)
+library(ggplot2)
+library(tidyverse)
+library(gridExtra)
+```
+
+```{r}
+# Taken from https://www.red-gate.com/simple-talk/sql/bi/text-mining-and-sentiment-analysis-with-r/
+
+# Read in the text
+illinois_lyrics <- readLines("TextData/Illinois.txt")
+# Make it a corpus
+illinois_corpus <- Corpus(VectorSource(illinois_lyrics))
+# Convert the text to lower case
+illinois_corpus <- tm_map(illinois_corpus, content_transformer(tolower))
+# Remove numbers
+illinois_corpus <- tm_map(illinois_corpus, removeNumbers)
+# Remove english common stopwords
+illinois_corpus <- tm_map(illinois_corpus, removeWords, stopwords("english"))
+# Remove your own stop word
+# specify your custom stopwords as a character vector
+illinois_corpus <- tm_map(illinois_corpus, removeWords, c("s", "company", "team")) 
+# Remove punctuations
+illinois_corpus <- tm_map(illinois_corpus, removePunctuation)
+# Eliminate extra white spaces
+illinois_corpus <- tm_map(illinois_corpus, stripWhitespace)
+illinois_unstemmed <- illinois_corpus
+# Text stemming - which reduces words to their root form
+illinois_corpus <- tm_map(illinois_corpus, stemDocument)
+```
+
+```{r}
+# Build a term-document matrix
+illinois_termdoc <- TermDocumentMatrix(illinois_corpus)
+illinois_matrix <- as.matrix(illinois_termdoc)
+# Sort by decreasing value of frequency
+illinois_v <- sort(rowSums(illinois_matrix),decreasing=TRUE)
+illinois_d <- data.frame(word = names(illinois_v),freq=illinois_v)
+```
+```{r}
+# Build a term-document matrix
+illinois_wc <- TermDocumentMatrix(illinois_unstemmed)
+illinois_wc <- as.matrix(illinois_wc)
+# Sort by decreasing value of frequency
+illinois_wc <- sort(rowSums(illinois_wc),decreasing=TRUE)
+illinois_wc <- data.frame(word = names(illinois_wc),freq=illinois_wc)
+
+illinois_cols <- c("#7E7A6F", "#29556E", "#EC9D7E", "#FDE856", "#EB772E")
+
+# Make a word cloud
+set.seed(2727)
+wordcloud(words=illinois_wc$word, freq=illinois_wc$freq, max.words=100,
+          color=illinois_cols)
+```
+```{r}
+illinois_sentiment <- get_sentiment(illinois_lyrics)
+summary(illinois_sentiment)
+
+il<-get_nrc_sentiment(illinois_lyrics)
+head(il,10)
+
+#transpose
+till<-data.frame(t(il))
+#The function rowSums computes column sums across rows for each level of a grouping variable.
+till_mean <- data.frame(rowSums(till))
+#Transformation and cleaning
+names(till_mean)[1] <- "count"
+till_mean <- cbind("sentiment" = rownames(till_mean), till_mean)
+rownames(till_mean) <- NULL
+till_mean<-till_mean[1:8,]
+#Plot One - count of words associated with each sentiment
+quickplot(sentiment, data=till_mean, weight=count, geom="bar", fill=sentiment, ylab="count")+
+  ggtitle("Illinois") +
+  theme_bw()
+
+```
+
