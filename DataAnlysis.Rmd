@@ -433,8 +433,7 @@ ggsave("SentimentPlots/BarPlots.png")
 
 ```
 ```{r}
-# TODO: use combine from gdata library to get dataframes together
-sentiments_all <- combine(suncame_mean,michigan_mean, sevenswans_mean,
+sentiments_all <- combine(suncame_mean, michigan_mean, sevenswans_mean,
                           illinois_mean, adz_mean, carrielowell_mean,
                           ascension_mean)
 
@@ -462,5 +461,38 @@ ggplot(data=sentiments_all, aes(x=year, y=count, color=sentiment)) +
   )
 
 ggsave("SentimentPlots/EmotionsPlot.png", dpi=500)
+
+
+suncame_mean$percent <- suncame_mean$count/sum(suncame_mean$count)*100
+michigan_mean$percent <- michigan_mean$count/sum(michigan_mean$count)*100
+sevenswans_mean$percent <- sevenswans_mean$count/sum(sevenswans_mean$count)*100
+illinois_mean$percent <- illinois_mean$count/sum(illinois_mean$count)*100
+adz_mean$percent <- adz_mean$count/sum(adz_mean$count)*100
+carrielowell_mean$percent <- carrielowell_mean$count/sum(carrielowell_mean$count)*100
+ascension_mean$percent <- ascension_mean$count/sum(ascension_mean$count)*100
+
+sentiments_per <- combine(suncame_mean, michigan_mean, sevenswans_mean,
+                          illinois_mean, adz_mean, carrielowell_mean,
+                          ascension_mean)
+
+sentiments_per$year <- c(rep(1999,8),
+                         rep(2003,8),
+                         rep(2004,8),
+                         rep(2005,8),
+                         rep(2010,8),
+                         rep(2015,8),
+                         rep(2020,8))
+
+ggplot(data=sentiments_per, aes(x=year, y=percent, color=sentiment)) +
+  geom_line(lwd=0.8) +
+  scale_x_discrete(labels=xlabels, limits=ticks) +
+  ggtitle("Album Sentiment Over Time") +
+  theme_bw() +
+  theme(
+    axis.text.x=element_text(angle=75, hjust=1)
+  )
+
+ggsave("SentimentPlots/PercentsPlot.png", dpi=500)
+
 ```
 
