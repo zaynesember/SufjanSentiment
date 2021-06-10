@@ -349,7 +349,7 @@ wordcloud(words=sevenswans_wc$word, freq=sevenswans_wc$freq, max.words=100,
 suncame_plot <- quickplot(sentiment, data=suncame_mean, weight=count, 
                           geom="bar", fill=sentiment, ylab="count") +
   ggtitle("A Sun Came") +
-  ylim(c(0,175)) +
+  ylim(c(0,190)) +
   theme_bw() +
   theme(legend.position="none",
         axis.title.x=element_blank(),
@@ -359,7 +359,7 @@ suncame_plot <- quickplot(sentiment, data=suncame_mean, weight=count,
 michigan_plot <- quickplot(sentiment, data=michigan_mean, weight=count, 
                            geom="bar", fill=sentiment, ylab="count") +
   ggtitle("Michigan") +
-  ylim(c(0,175)) +
+  ylim(c(0,190)) +
   ylab("") +
   theme_bw() +
   theme(legend.position="none",
@@ -371,7 +371,7 @@ sevenswans_plot <- quickplot(sentiment, data=sevenswans_mean, weight=count,
                              geom="bar", fill=sentiment, ylab="count") +
   ggtitle("Seven Swans") +
   ylab("") +
-  ylim(c(0,175)) +
+  ylim(c(0,190)) +
   theme_bw() +
   theme(legend.position="none",
         axis.title.x=element_blank(),
@@ -381,7 +381,7 @@ sevenswans_plot <- quickplot(sentiment, data=sevenswans_mean, weight=count,
 illinois_plot <- quickplot(sentiment, data=illinois_mean, weight=count, 
                            geom="bar", fill=sentiment, ylab="count") +
   ggtitle("Illinois") +
-  ylim(c(0,175)) +
+  ylim(c(0,190)) +
   theme_bw() +
   theme(legend.position="none",
         axis.title.x=element_blank(),
@@ -392,7 +392,7 @@ adz_plot <- quickplot(sentiment, data=adz_mean, weight=count,
                       geom="bar", fill=sentiment, ylab="count") +
   ggtitle("The Age of Adz") +
   ylab("") +
-  ylim(c(0,175)) +
+  ylim(c(0,190)) +
   theme_bw() +
   theme(legend.position="none",
         axis.title.x=element_blank(),
@@ -403,7 +403,7 @@ carrielowell_plot <- quickplot(sentiment, data=carrielowell_mean, weight=count,
                                geom="bar", fill=sentiment, ylab="count") +
   ggtitle("Carrie & Lowell") +
   ylab("") +
-  ylim(c(0,175)) +
+  ylim(c(0,190)) +
   theme_bw() +
   theme(legend.position="none",
         axis.title.x=element_blank(),
@@ -414,7 +414,7 @@ carrielowell_plot <- quickplot(sentiment, data=carrielowell_mean, weight=count,
 ascension_plot <- quickplot(sentiment, data=ascension_mean, weight=count, 
                             geom="bar", fill=sentiment, ylab="count") +
   ggtitle("The Ascension") +
-  ylim(c(0,175)) +
+  ylim(c(0,190)) +
   theme_bw() +
   theme(legend.position="none",
         axis.title.x=element_blank(),
