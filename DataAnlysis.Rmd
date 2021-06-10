@@ -428,7 +428,7 @@ ggpubr::ggarrange(suncame_plot,
           adz_plot,
           carrielowell_plot,
           ascension_plot,
-          ncol=3, nrow=3, common.legend=T, legend = "bottom", main="Test")
+          ncol=3, nrow=3, common.legend=T, legend = "bottom")
 ggsave("SentimentPlots/BarPlots.png")
 
 ```
