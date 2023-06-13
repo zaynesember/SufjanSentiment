@@ -1,0 +1,3 @@
+Time signature data
+Album ratings
+Song data from Spotify API
