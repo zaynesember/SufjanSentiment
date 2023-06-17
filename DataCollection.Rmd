@@ -1,0 +1,109 @@
+---
+title: "Data Collection"
+output: html_notebook
+author: "Zayne Sember"
+---
+
+```{r setup}
+library(tidyverse)
+library(spotifyr)
+library(httpuv)
+library(readxl)
+```
+
+# Authentication with the Spotify API
+```{r}
+# Get API credentials
+secrets <- read.delim("secrets.txt", header=F)
+
+# Set environment variables for authorization
+Sys.setenv(SPOTIFY_CLIENT_ID = secrets[[1]][1])
+Sys.setenv(SPOTIFY_CLIENT_SECRET = secrets[[1]][2])
+
+# Authenticate
+# Note: default of all scopes is broken but since we're only accessing
+# public info no scope permissions are really needed
+access_token <- get_spotify_authorization_code(
+  client_id = secrets[[1]][1], client_secret=secrets[[1]][2],
+  scope=scopes()[7]
+)
+
+# Spotify artist ID for Sufjan
+sufjan <- '4MXUO7sVCaFgFjoTI5ox5c'
+```
+
+# Getting data from Spotify
+```{r}
+# Get all artist metadata
+artist <- get_artist(sufjan)
+
+# Get all album metadata and select what we want
+albums <- get_artist_albums(sufjan)
+albums <- albums %>% 
+  select(id, name, release_date, total_tracks)
+
+# Spotify has a reissue of A Sun Came! so we need to correct the name
+# and release date to reflect the original release (tracks are the same)
+albums$name[albums$id=="7GpWcAtQ2dmn7Cpb4aZGfc"] <- "A Sun Came!"
+albums$release_date[albums$id=="7GpWcAtQ2dmn7Cpb4aZGfc"] <- "1999-06-13"
+
+# Get album names and ids of interest (non-instrumental/live albums)
+album_names <- albums$name[c(2,4,10,12,13,17,18,19)]
+album_ids <- albums$id[c(2,4,10,12,13,17,18,19)]
+
+# Manually getting tracks because get_album_tracks() doesn't play nice with
+# for loop or lapply()
+a1 <- get_album_tracks(id=album_ids[1], limit=50) %>% 
+  select(name, id, duration_ms, track_number) %>% 
+  mutate(album_name=(albums %>% filter(id==album_ids[1]))$name,
+         album_id=(albums %>% filter(id==album_ids[1]))$id)
+
+a2 <- get_album_tracks(id=album_ids[2], limit=50) %>% 
+  select(name, id, duration_ms, track_number) %>% 
+  mutate(album_name=(albums %>% filter(id==album_ids[2]))$name,
+         album_id=(albums %>% filter(id==album_ids[2]))$id)
+
+a3 <- get_album_tracks(id=album_ids[3], limit=50) %>% 
+  select(name, id, duration_ms, track_number) %>% 
+  mutate(album_name=(albums %>% filter(id==album_ids[3]))$name,
+         album_id=(albums %>% filter(id==album_ids[3]))$id)
+
+a4 <- get_album_tracks(id=album_ids[4], limit=50) %>% 
+  select(name, id, duration_ms, track_number) %>% 
+  mutate(album_name=(albums %>% filter(id==album_ids[4]))$name,
+         album_id=(albums %>% filter(id==album_ids[4]))$id)
+
+a5 <- get_album_tracks(id=album_ids[5], limit=50) %>% 
+  select(name, id, duration_ms, track_number) %>% 
+  mutate(album_name=(albums %>% filter(id==album_ids[5]))$name,
+         album_id=(albums %>% filter(id==album_ids[5]))$id)
+
+a6 <- get_album_tracks(id=album_ids[6], limit=50) %>% 
+  select(name, id, duration_ms, track_number) %>% 
+  mutate(album_name=(albums %>% filter(id==album_ids[6]))$name,
+         album_id=(albums %>% filter(id==album_ids[6]))$id)
+
+a7 <- get_album_tracks(id=album_ids[7], limit=50) %>% 
+  select(name, id, duration_ms, track_number) %>% 
+  mutate(album_name=(albums %>% filter(id==album_ids[7]))$name,
+         album_id=(albums %>% filter(id==album_ids[7]))$id)
+
+a8 <- get_album_tracks(id=album_ids[8], limit=50) %>% 
+  select(name, id, duration_ms, track_number) %>% 
+  mutate(album_name=(albums %>% filter(id==album_ids[8]))$name,
+         album_id=(albums %>% filter(id==album_ids[8]))$id)
+
+# Bind into one dataframe
+tracks <- rbind(a1, a2, a3, a4, a5, a6, a7, a8)
+
+# Remove temp variables
+rm(a1, a2, a3, a4, a5, a6, a7, a8)
+```
+
+# Merging Time Signature
+```{r}
+# Read in cleaned up time signature data taken from:
+# https://docs.google.com/spreadsheets/d/1ASKbuWneEyX1_8WfxjKWFi0U1OXJ8Jbnef8zLrQ01Wk/edit#gid=0
+timeSignatures <- read_excel("Data/timesignatures.xlsx", sheet="Main Discography")
+```
+

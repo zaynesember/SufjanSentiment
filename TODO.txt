@@ -1,3 +1,2 @@
-Time signature data
-Album ratings
-Song data from Spotify API
+BPM and key from https://songbpm.com/@sufjan-stevens?after=0bd0bfe1-6622-4520-bb90-1f72db3135c2
+Merge Billboard data
