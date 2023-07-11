@@ -38,7 +38,7 @@ sufjan <- '4MXUO7sVCaFgFjoTI5ox5c'
 artist <- get_artist(sufjan)
 
 # Get all album metadata and select what we want
-albums <- get_artist_albums(sufjan)
+albums <- get_artist_albums(sufjan, limit=50)
 albums <- albums %>% 
   select(id, name, release_date, total_tracks)
 
@@ -48,8 +48,8 @@ albums$name[albums$id=="7GpWcAtQ2dmn7Cpb4aZGfc"] <- "A Sun Came!"
 albums$release_date[albums$id=="7GpWcAtQ2dmn7Cpb4aZGfc"] <- "1999-06-13"
 
 # Get album names and ids of interest (non-instrumental/live albums)
-album_names <- albums$name[c(2,4,10,12,13,17,18,19)]
-album_ids <- albums$id[c(2,4,10,12,13,17,18,19)]
+album_names <- albums$name[c(2,4,10,12,13,17,18,19,21,22)]
+album_ids <- albums$id[c(2,4,10,12,13,17,18,19,21,22)]
 
 # Manually getting tracks because get_album_tracks() doesn't play nice with
 # for loop or lapply()
@@ -105,5 +105,29 @@ rm(a1, a2, a3, a4, a5, a6, a7, a8)
 # Read in cleaned up time signature data taken from:
 # https://docs.google.com/spreadsheets/d/1ASKbuWneEyX1_8WfxjKWFi0U1OXJ8Jbnef8zLrQ01Wk/edit#gid=0
 timeSignatures <- read_excel("Data/timesignatures.xlsx", sheet="Main Discography")
+
+# Merge the time signatures into the track dataset
+tracks <- tracks %>% 
+  mutate(name1=case_when(
+    nchar(name) >= 20 ~ substr(tolower(name), 1, 20),
+    T ~ tolower(name)
+    )) %>% 
+  left_join(timeSignatures %>% 
+              mutate(name1=case_when(
+                            nchar(name) >= 20 ~ tolower(substr(name, 1, 20)),
+                            T ~ tolower(name))), 
+            by="name1") %>% 
+  select(-name1, -name.y) %>% 
+  rename(name="name.x")
+```
+
+# Merging Billboard data
+```{r}
+# Get Billboard album chart data for Sufjan
+billboard  <- read_excel("Data/billboard.xlsx")
+
+# Merge Billboard data with album data
+albums <- albums %>% 
+  left_join(billboard)
 ```
 
