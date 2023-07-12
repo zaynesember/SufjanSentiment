@@ -1,0 +1,12 @@
+---
+title: "SufjanSentiment Visualization"
+author: "Zayne Sember"
+output: html_notebook
+---
+
+```{r setup}
+library(tidyverse)
+```
+
+
+

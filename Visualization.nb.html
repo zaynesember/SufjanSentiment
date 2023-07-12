@@ -12,7 +12,7 @@
 <meta name="author" content="Zayne Sember" />
 
 
-<title>Data Collection</title>
+<title>SufjanSentiment Visualization</title>
 
 <script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
 // be compatible with the behavior of Pandoc < 2.8).
@@ -1747,7 +1747,7 @@ display: none;
 
 
 
-<h1 class="title toc-ignore">Data Collection</h1>
+<h1 class="title toc-ignore">SufjanSentiment Visualization</h1>
 <h4 class="author">Zayne Sember</h4>
 
 </div>
@@ -1759,233 +1759,11 @@ display: none;
 <!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubGlicmFyeSh0aWR5dmVyc2UpXG5gYGAifQ== -->
 <pre class="r"><code>library(tidyverse)</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoi4pSA4pSAIEF0dGFjaGluZyBjb3JlIHRpZHl2ZXJzZSBwYWNrYWdlcyDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIAgdGlkeXZlcnNlIDIuMC4wIOKUgOKUgFxu4pyUIGRwbHlyICAgICAxLjEuMCAgICAg4pyUIHJlYWRyICAgICAyLjEuNFxu4pyUIGZvcmNhdHMgICAxLjAuMCAgICAg4pyUIHN0cmluZ3IgICAxLjUuMFxu4pyUIGdncGxvdDIgICAzLjQuMSAgICAg4pyUIHRpYmJsZSAgICAzLjIuMFxu4pyUIGx1YnJpZGF0ZSAxLjkuMiAgICAg4pyUIHRpZHlyICAgICAxLjMuMFxu4pyUIHB1cnJyICAgICAxLjAuMSAgICAg4pSA4pSAIENvbmZsaWN0cyDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIAgdGlkeXZlcnNlX2NvbmZsaWN0cygpIOKUgOKUgFxu4pyWIGRwbHlyOjpmaWx0ZXIoKSBtYXNrcyBzdGF0czo6ZmlsdGVyKClcbuKcliBkcGx5cjo6bGFnKCkgICAgbWFza3Mgc3RhdHM6OmxhZygpXG7ihLkgVXNlIHRoZSBcdTAwMWJdODs7aHR0cDovL2NvbmZsaWN0ZWQuci1saWIub3JnL1x1MDAwN2NvbmZsaWN0ZWQgcGFja2FnZVx1MDAxYl04OztcdTAwMDcgdG8gZm9yY2UgYWxsIGNvbmZsaWN0cyB0byBiZWNvbWUgZXJyb3JzXG4ifQ== -->
-<pre><code>── Attaching core tidyverse packages ───────────────── tidyverse 2.0.0 ──
-✔ dplyr     1.1.0     ✔ readr     2.1.4
-✔ forcats   1.0.0     ✔ stringr   1.5.0
-✔ ggplot2   3.4.1     ✔ tibble    3.2.0
-✔ lubridate 1.9.2     ✔ tidyr     1.3.0
-✔ purrr     1.0.1     ── Conflicts ─────────────────────────────────── tidyverse_conflicts() ──
-✖ dplyr::filter() masks stats::filter()
-✖ dplyr::lag()    masks stats::lag()
-ℹ Use the ]8;;http://conflicted.r-lib.org/conflicted package]8;; to force all conflicts to become errors</code></pre>
-<!-- rnb-output-end -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubGlicmFyeShzcG90aWZ5cilcbmBgYCJ9 -->
-<pre class="r"><code>library(spotifyr)</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiV2FybmluZzogcGFja2FnZSDigJhzcG90aWZ5cuKAmSB3YXMgYnVpbHQgdW5kZXIgUiB2ZXJzaW9uIDQuMi4zXG4ifQ== -->
-<pre><code>Warning: package ‘spotifyr’ was built under R version 4.2.3</code></pre>
-<!-- rnb-output-end -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubGlicmFyeShodHRwdXYpXG5gYGAifQ== -->
-<pre class="r"><code>library(httpuv)</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiV2FybmluZzogcGFja2FnZSDigJhodHRwdXbigJkgd2FzIGJ1aWx0IHVuZGVyIFIgdmVyc2lvbiA0LjIuM1xuIn0= -->
-<pre><code>Warning: package ‘httpuv’ was built under R version 4.2.3</code></pre>
-<!-- rnb-output-end -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubGlicmFyeShyZWFkeGwpXG5gYGAifQ== -->
-<pre class="r"><code>library(readxl)</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-chunk-end -->
-<!-- rnb-text-begin -->
-<div id="authentication-with-the-spotify-api" class="section level1">
-<h1>Authentication with the Spotify API</h1>
-<!-- rnb-text-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyBHZXQgQVBJIGNyZWRlbnRpYWxzXG5zZWNyZXRzIDwtIHJlYWQuZGVsaW0oXCJzZWNyZXRzLnR4dFwiLCBoZWFkZXI9RilcbmBgYCJ9 -->
-<pre class="r"><code># Get API credentials
-secrets &lt;- read.delim(&quot;secrets.txt&quot;, header=F)</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiV2FybmluZzogY2Fubm90IG9wZW4gZmlsZSAnc2VjcmV0cy50eHQnOiBObyBzdWNoIGZpbGUgb3IgZGlyZWN0b3J5RXJyb3IgaW4gZmlsZShmaWxlLCBcInJ0XCIpIDogY2Fubm90IG9wZW4gdGhlIGNvbm5lY3Rpb25cbiJ9 -->
-<pre><code>Warning: cannot open file &#39;secrets.txt&#39;: No such file or directoryError in file(file, &quot;rt&quot;) : cannot open the connection</code></pre>
-<!-- rnb-output-end -->
-<!-- rnb-chunk-end -->
-<!-- rnb-text-begin -->
-</div>
-<div id="getting-data-from-spotify" class="section level1">
-<h1>Getting data from Spotify</h1>
-<!-- rnb-text-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYGBgclxuIyBHZXQgYWxsIGFydGlzdCBtZXRhZGF0YVxuYXJ0aXN0IDwtIGdldF9hcnRpc3Qoc3VmamFuKVxuXG4jIEdldCBhbGwgYWxidW0gbWV0YWRhdGEgYW5kIHNlbGVjdCB3aGF0IHdlIHdhbnRcbiMgVE9ETzogTUlTU0lORyBTRVZFTiBTV0FOUyBBTkQgTUlDSElHQU4gRk9SIFNPTUUgUkVBU09OXG5hbGJ1bXMgPC0gZ2V0X2FydGlzdF9hbGJ1bXMoc3VmamFuLCBsaW1pdD01MClcbmFsYnVtcyA8LSBhbGJ1bXMgJT4lIFxuICBzZWxlY3QoaWQsIG5hbWUsIHJlbGVhc2VfZGF0ZSwgdG90YWxfdHJhY2tzKVxuXG4jIFNwb3RpZnkgaGFzIGEgcmVpc3N1ZSBvZiBBIFN1biBDYW1lISBzbyB3ZSBuZWVkIHRvIGNvcnJlY3QgdGhlIG5hbWVcbiMgYW5kIHJlbGVhc2UgZGF0ZSB0byByZWZsZWN0IHRoZSBvcmlnaW5hbCByZWxlYXNlICh0cmFja3MgYXJlIHRoZSBzYW1lKVxuYWxidW1zJG5hbWVbYWxidW1zJGlkPT1cXDdHcFdjQXRRMmRtbjdDcGI0YVpHZmNcXF0gPC0gXFxBIFN1biBDYW1lIVxcXG5hbGJ1bXMkcmVsZWFzZV9kYXRlW2FsYnVtcyRpZD09XFw3R3BXY0F0UTJkbW43Q3BiNGFaR2ZjXFxdIDwtIFxcMTk5OS0wNi0xM1xcXG5cbiMgR2V0IGFsYnVtIG5hbWVzIGFuZCBpZHMgb2YgaW50ZXJlc3QgKG5vbi1pbnN0cnVtZW50YWwvbGl2ZSBhbGJ1bXMpXG5hbGJ1bV9uYW1lcyA8LSBhbGJ1bXMkbmFtZVtjKDIsNCwxMCwxMiwxMywxNywxOCwxOSwyMSwyMildXG5hbGJ1bV9pZHMgPC0gYWxidW1zJGlkW2MoMiw0LDEwLDEyLDEzLDE3LDE4LDE5LDIxLDIyKV1cblxuIyBNYW51YWxseSBnZXR0aW5nIHRyYWNrcyBiZWNhdXNlIGdldF9hbGJ1bV90cmFja3MoKSBkb2Vzbid0IHBsYXkgbmljZSB3aXRoXG4jIGZvciBsb29wIG9yIGxhcHBseSgpXG5hMSA8LSBnZXRfYWxidW1fdHJhY2tzKGlkPWFsYnVtX2lkc1sxXSwgbGltaXQ9NTApICU+JSBcbiAgc2VsZWN0KG5hbWUsIGlkLCBkdXJhdGlvbl9tcywgdHJhY2tfbnVtYmVyKSAlPiUgXG4gIG11dGF0ZShhbGJ1bV9uYW1lPShhbGJ1bXMgJT4lIGZpbHRlcihpZD09YWxidW1faWRzWzFdKSkkbmFtZSxcbiAgICAgICAgIGFsYnVtX2lkPShhbGJ1bXMgJT4lIGZpbHRlcihpZD09YWxidW1faWRzWzFdKSkkaWQpXG5cbmEyIDwtIGdldF9hbGJ1bV90cmFja3MoaWQ9YWxidW1faWRzWzJdLCBsaW1pdD01MCkgJT4lIFxuICBzZWxlY3QobmFtZSwgaWQsIGR1cmF0aW9uX21zLCB0cmFja19udW1iZXIpICU+JSBcbiAgbXV0YXRlKGFsYnVtX25hbWU9KGFsYnVtcyAlPiUgZmlsdGVyKGlkPT1hbGJ1bV9pZHNbMl0pKSRuYW1lLFxuICAgICAgICAgYWxidW1faWQ9KGFsYnVtcyAlPiUgZmlsdGVyKGlkPT1hbGJ1bV9pZHNbMl0pKSRpZClcblxuYTMgPC0gZ2V0X2FsYnVtX3RyYWNrcyhpZD1hbGJ1bV9pZHNbM10sIGxpbWl0PTUwKSAlPiUgXG4gIHNlbGVjdChuYW1lLCBpZCwgZHVyYXRpb25fbXMsIHRyYWNrX251bWJlcikgJT4lIFxuICBtdXRhdGUoYWxidW1fbmFtZT0oYWxidW1zICU+JSBmaWx0ZXIoaWQ9PWFsYnVtX2lkc1szXSkpJG5hbWUsXG4gICAgICAgICBhbGJ1bV9pZD0oYWxidW1zICU+JSBmaWx0ZXIoaWQ9PWFsYnVtX2lkc1szXSkpJGlkKVxuXG5hNCA8LSBnZXRfYWxidW1fdHJhY2tzKGlkPWFsYnVtX2lkc1s0XSwgbGltaXQ9NTApICU+JSBcbiAgc2VsZWN0KG5hbWUsIGlkLCBkdXJhdGlvbl9tcywgdHJhY2tfbnVtYmVyKSAlPiUgXG4gIG11dGF0ZShhbGJ1bV9uYW1lPShhbGJ1bXMgJT4lIGZpbHRlcihpZD09YWxidW1faWRzWzRdKSkkbmFtZSxcbiAgICAgICAgIGFsYnVtX2lkPShhbGJ1bXMgJT4lIGZpbHRlcihpZD09YWxidW1faWRzWzRdKSkkaWQpXG5cbmE1IDwtIGdldF9hbGJ1bV90cmFja3MoaWQ9YWxidW1faWRzWzVdLCBsaW1pdD01MCkgJT4lIFxuICBzZWxlY3QobmFtZSwgaWQsIGR1cmF0aW9uX21zLCB0cmFja19udW1iZXIpICU+JSBcbiAgbXV0YXRlKGFsYnVtX25hbWU9KGFsYnVtcyAlPiUgZmlsdGVyKGlkPT1hbGJ1bV9pZHNbNV0pKSRuYW1lLFxuICAgICAgICAgYWxidW1faWQ9KGFsYnVtcyAlPiUgZmlsdGVyKGlkPT1hbGJ1bV9pZHNbNV0pKSRpZClcblxuYTYgPC0gZ2V0X2FsYnVtX3RyYWNrcyhpZD1hbGJ1bV9pZHNbNl0sIGxpbWl0PTUwKSAlPiUgXG4gIHNlbGVjdChuYW1lLCBpZCwgZHVyYXRpb25fbXMsIHRyYWNrX251bWJlcikgJT4lIFxuICBtdXRhdGUoYWxidW1fbmFtZT0oYWxidW1zICU+JSBmaWx0ZXIoaWQ9PWFsYnVtX2lkc1s2XSkpJG5hbWUsXG4gICAgICAgICBhbGJ1bV9pZD0oYWxidW1zICU+JSBmaWx0ZXIoaWQ9PWFsYnVtX2lkc1s2XSkpJGlkKVxuXG5hNyA8LSBnZXRfYWxidW1fdHJhY2tzKGlkPWFsYnVtX2lkc1s3XSwgbGltaXQ9NTApICU+JSBcbiAgc2VsZWN0KG5hbWUsIGlkLCBkdXJhdGlvbl9tcywgdHJhY2tfbnVtYmVyKSAlPiUgXG4gIG11dGF0ZShhbGJ1bV9uYW1lPShhbGJ1bXMgJT4lIGZpbHRlcihpZD09YWxidW1faWRzWzddKSkkbmFtZSxcbiAgICAgICAgIGFsYnVtX2lkPShhbGJ1bXMgJT4lIGZpbHRlcihpZD09YWxidW1faWRzWzddKSkkaWQpXG5cbmE4IDwtIGdldF9hbGJ1bV90cmFja3MoaWQ9YWxidW1faWRzWzhdLCBsaW1pdD01MCkgJT4lIFxuICBzZWxlY3QobmFtZSwgaWQsIGR1cmF0aW9uX21zLCB0cmFja19udW1iZXIpICU+JSBcbiAgbXV0YXRlKGFsYnVtX25hbWU9KGFsYnVtcyAlPiUgZmlsdGVyKGlkPT1hbGJ1bV9pZHNbOF0pKSRuYW1lLFxuICAgICAgICAgYWxidW1faWQ9KGFsYnVtcyAlPiUgZmlsdGVyKGlkPT1hbGJ1bV9pZHNbOF0pKSRpZClcblxuIyBCaW5kIGludG8gb25lIGRhdGFmcmFtZVxudHJhY2tzIDwtIHJiaW5kKGExLCBhMiwgYTMsIGE0LCBhNSwgYTYsIGE3LCBhOClcblxuIyBSZW1vdmUgdGVtcCB2YXJpYWJsZXNcbnJtKGExLCBhMiwgYTMsIGE0LCBhNSwgYTYsIGE3LCBhOClcbmBgYFxuYGBgIn0= -->
-<pre class="r"><code>```r
-# Get all artist metadata
-artist &lt;- get_artist(sufjan)
-
-# Get all album metadata and select what we want
-# TODO: MISSING SEVEN SWANS AND MICHIGAN FOR SOME REASON
-albums &lt;- get_artist_albums(sufjan, limit=50)
-albums &lt;- albums %&gt;% 
-  select(id, name, release_date, total_tracks)
-
-# Spotify has a reissue of A Sun Came! so we need to correct the name
-# and release date to reflect the original release (tracks are the same)
-albums$name[albums$id==\7GpWcAtQ2dmn7Cpb4aZGfc\] &lt;- \A Sun Came!\
-albums$release_date[albums$id==\7GpWcAtQ2dmn7Cpb4aZGfc\] &lt;- \1999-06-13\
-
-# Get album names and ids of interest (non-instrumental/live albums)
-album_names &lt;- albums$name[c(2,4,10,12,13,17,18,19,21,22)]
-album_ids &lt;- albums$id[c(2,4,10,12,13,17,18,19,21,22)]
-
-# Manually getting tracks because get_album_tracks() doesn&#39;t play nice with
-# for loop or lapply()
-a1 &lt;- get_album_tracks(id=album_ids[1], limit=50) %&gt;% 
-  select(name, id, duration_ms, track_number) %&gt;% 
-  mutate(album_name=(albums %&gt;% filter(id==album_ids[1]))$name,
-         album_id=(albums %&gt;% filter(id==album_ids[1]))$id)
-
-a2 &lt;- get_album_tracks(id=album_ids[2], limit=50) %&gt;% 
-  select(name, id, duration_ms, track_number) %&gt;% 
-  mutate(album_name=(albums %&gt;% filter(id==album_ids[2]))$name,
-         album_id=(albums %&gt;% filter(id==album_ids[2]))$id)
-
-a3 &lt;- get_album_tracks(id=album_ids[3], limit=50) %&gt;% 
-  select(name, id, duration_ms, track_number) %&gt;% 
-  mutate(album_name=(albums %&gt;% filter(id==album_ids[3]))$name,
-         album_id=(albums %&gt;% filter(id==album_ids[3]))$id)
-
-a4 &lt;- get_album_tracks(id=album_ids[4], limit=50) %&gt;% 
-  select(name, id, duration_ms, track_number) %&gt;% 
-  mutate(album_name=(albums %&gt;% filter(id==album_ids[4]))$name,
-         album_id=(albums %&gt;% filter(id==album_ids[4]))$id)
-
-a5 &lt;- get_album_tracks(id=album_ids[5], limit=50) %&gt;% 
-  select(name, id, duration_ms, track_number) %&gt;% 
-  mutate(album_name=(albums %&gt;% filter(id==album_ids[5]))$name,
-         album_id=(albums %&gt;% filter(id==album_ids[5]))$id)
-
-a6 &lt;- get_album_tracks(id=album_ids[6], limit=50) %&gt;% 
-  select(name, id, duration_ms, track_number) %&gt;% 
-  mutate(album_name=(albums %&gt;% filter(id==album_ids[6]))$name,
-         album_id=(albums %&gt;% filter(id==album_ids[6]))$id)
-
-a7 &lt;- get_album_tracks(id=album_ids[7], limit=50) %&gt;% 
-  select(name, id, duration_ms, track_number) %&gt;% 
-  mutate(album_name=(albums %&gt;% filter(id==album_ids[7]))$name,
-         album_id=(albums %&gt;% filter(id==album_ids[7]))$id)
-
-a8 &lt;- get_album_tracks(id=album_ids[8], limit=50) %&gt;% 
-  select(name, id, duration_ms, track_number) %&gt;% 
-  mutate(album_name=(albums %&gt;% filter(id==album_ids[8]))$name,
-         album_id=(albums %&gt;% filter(id==album_ids[8]))$id)
-
-# Bind into one dataframe
-tracks &lt;- rbind(a1, a2, a3, a4, a5, a6, a7, a8)
-
-# Remove temp variables
-rm(a1, a2, a3, a4, a5, a6, a7, a8)</code></pre>
-<pre><code>
-&lt;!-- rnb-source-end --&gt;
-
-&lt;!-- rnb-chunk-end --&gt;
-
-
-&lt;!-- rnb-text-begin --&gt;
-
-
-# Merging Time Signature
-
-&lt;!-- rnb-text-end --&gt;
-
-
-&lt;!-- rnb-chunk-begin --&gt;
-
-
-&lt;!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYGBgclxuIyBSZWFkIGluIGNsZWFuZWQgdXAgdGltZSBzaWduYXR1cmUgZGF0YSB0YWtlbiBmcm9tOlxuIyBodHRwczovL2RvY3MuZ29vZ2xlLmNvbS9zcHJlYWRzaGVldHMvZC8xQVNLYnVXbmVFeVgxXzhXZnhqS1dGaTBVMU9YSjhKYm5lZjh6THJRMDFXay9lZGl0I2dpZD0wXG50aW1lU2lnbmF0dXJlcyA8LSByZWFkX2V4Y2VsKFxcRGF0YS90aW1lc2lnbmF0dXJlcy54bHN4XFwsIHNoZWV0PVxcTWFpbiBEaXNjb2dyYXBoeVxcKVxuYGBgXG5gYGAifQ== --&gt;
-
-```r
-```r
-# Read in cleaned up time signature data taken from:
-# https://docs.google.com/spreadsheets/d/1ASKbuWneEyX1_8WfxjKWFi0U1OXJ8Jbnef8zLrQ01Wk/edit#gid=0
-timeSignatures &lt;- read_excel(\Data/timesignatures.xlsx\, sheet=\Main Discography\)</code></pre>
-<pre><code>
-&lt;!-- rnb-source-end --&gt;
-
-&lt;!-- rnb-output-begin eyJkYXRhIjoiV2FybmluZzogRXhwZWN0aW5nIG51bWVyaWMgaW4gQjE0MiAvIFIxNDJDMjogZ290IGEgZGF0ZVdhcm5pbmc6IEV4cGVjdGluZyBudW1lcmljIGluIEIxNTMgLyBSMTUzQzI6IGdvdCBhIGRhdGVXYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBDMTU0IC8gUjE1NEMzOiBnb3QgYSBkYXRlV2FybmluZzogRXhwZWN0aW5nIG51bWVyaWMgaW4gQzE1NSAvIFIxNTVDMzogZ290IGEgZGF0ZVdhcm5pbmc6IEV4cGVjdGluZyBudW1lcmljIGluIEMxNTYgLyBSMTU2QzM6IGdvdCBhIGRhdGVXYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBDMTU3IC8gUjE1N0MzOiBnb3QgYSBkYXRlV2FybmluZzogRXhwZWN0aW5nIG51bWVyaWMgaW4gQzE1OCAvIFIxNThDMzogZ290IGEgZGF0ZVdhcm5pbmc6IEV4cGVjdGluZyBudW1lcmljIGluIEMxNTkgLyBSMTU5QzM6IGdvdCBhIGRhdGVXYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBDMTYwIC8gUjE2MEMzOiBnb3QgYSBkYXRlV2FybmluZzogRXhwZWN0aW5nIG51bWVyaWMgaW4gQzE2MSAvIFIxNjFDMzogZ290IGEgZGF0ZVdhcm5pbmc6IEV4cGVjdGluZyBudW1lcmljIGluIEMxNjIgLyBSMTYyQzM6IGdvdCBhIGRhdGVXYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBDMTYzIC8gUjE2M0MzOiBnb3QgYSBkYXRlV2FybmluZzogRXhwZWN0aW5nIG51bWVyaWMgaW4gQzE2NCAvIFIxNjRDMzogZ290IGEgZGF0ZVdhcm5pbmc6IEV4cGVjdGluZyBudW1lcmljIGluIEMxNjUgLyBSMTY1QzM6IGdvdCBhIGRhdGVXYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBDMTY2IC8gUjE2NkMzOiBnb3QgYSBkYXRlV2FybmluZzogRXhwZWN0aW5nIG51bWVyaWMgaW4gQzE2NyAvIFIxNjdDMzogZ290IGEgZGF0ZVdhcm5pbmc6IEV4cGVjdGluZyBudW1lcmljIGluIEMxNjggLyBSMTY4QzM6IGdvdCBhIGRhdGVcbiJ9 --&gt;
-</code></pre>
-<p>Warning: Expecting numeric in B142 / R142C2: got a dateWarning:
-Expecting numeric in B153 / R153C2: got a dateWarning: Expecting numeric
-in C154 / R154C3: got a dateWarning: Expecting numeric in C155 / R155C3:
-got a dateWarning: Expecting numeric in C156 / R156C3: got a
-dateWarning: Expecting numeric in C157 / R157C3: got a dateWarning:
-Expecting numeric in C158 / R158C3: got a dateWarning: Expecting numeric
-in C159 / R159C3: got a dateWarning: Expecting numeric in C160 / R160C3:
-got a dateWarning: Expecting numeric in C161 / R161C3: got a
-dateWarning: Expecting numeric in C162 / R162C3: got a dateWarning:
-Expecting numeric in C163 / R163C3: got a dateWarning: Expecting numeric
-in C164 / R164C3: got a dateWarning: Expecting numeric in C165 / R165C3:
-got a dateWarning: Expecting numeric in C166 / R166C3: got a
-dateWarning: Expecting numeric in C167 / R167C3: got a dateWarning:
-Expecting numeric in C168 / R168C3: got a date</p>
-<pre><code>
-
-
-&lt;!-- rnb-output-end --&gt;
-
-&lt;!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYGBgclxuIyBNZXJnZSB0aGUgdGltZSBzaWduYXR1cmVzIGludG8gdGhlIHRyYWNrIGRhdGFzZXRcbnRyYWNrcyA8LSB0cmFja3MgJT4lIFxuICBtdXRhdGUobmFtZTE9Y2FzZV93aGVuKFxuICAgIG5jaGFyKG5hbWUpID49IDIwIH4gc3Vic3RyKHRvbG93ZXIobmFtZSksIDEsIDIwKSxcbiAgICBUIH4gdG9sb3dlcihuYW1lKVxuICAgICkpICU+JSBcbiAgbGVmdF9qb2luKHRpbWVTaWduYXR1cmVzICU+JSBcbiAgICAgICAgICAgICAgbXV0YXRlKG5hbWUxPWNhc2Vfd2hlbihcbiAgICAgICAgICAgICAgICAgICAgICAgICAgICBuY2hhcihuYW1lKSA+PSAyMCB+IHRvbG93ZXIoc3Vic3RyKG5hbWUsIDEsIDIwKSksXG4gICAgICAgICAgICAgICAgICAgICAgICAgICAgVCB+IHRvbG93ZXIobmFtZSkpKSwgXG4gICAgICAgICAgICBieT1cXG5hbWUxXFwpICU+JSBcbiAgc2VsZWN0KC1uYW1lMSwgLW5hbWUueSkgJT4lIFxuICByZW5hbWUobmFtZT1cXG5hbWUueFxcKVxuYGBgXG5gYGAifQ== --&gt;
-
-```r
-```r
-# Merge the time signatures into the track dataset
-tracks &lt;- tracks %&gt;% 
-  mutate(name1=case_when(
-    nchar(name) &gt;= 20 ~ substr(tolower(name), 1, 20),
-    T ~ tolower(name)
-    )) %&gt;% 
-  left_join(timeSignatures %&gt;% 
-              mutate(name1=case_when(
-                            nchar(name) &gt;= 20 ~ tolower(substr(name, 1, 20)),
-                            T ~ tolower(name))), 
-            by=\name1\) %&gt;% 
-  select(-name1, -name.y) %&gt;% 
-  rename(name=\name.x\)</code></pre>
-<pre><code>
-&lt;!-- rnb-source-end --&gt;
-
-&lt;!-- rnb-output-begin eyJkYXRhIjoiV2FybmluZzogRGV0ZWN0ZWQgYW4gdW5leHBlY3RlZCBtYW55LXRvLW1hbnkgcmVsYXRpb25zaGlwIGJldHdlZW4gYHhgIGFuZCBgeWAuXG4ifQ== --&gt;
-</code></pre>
-<p>Warning: Detected an unexpected many-to-many relationship between
-<code>x</code> and <code>y</code>.</p>
-<pre><code>
-
-
-&lt;!-- rnb-output-end --&gt;
-
-&lt;!-- rnb-chunk-end --&gt;
-
-
-&lt;!-- rnb-text-begin --&gt;
-
-
-# Merging Billboard data
-
-&lt;!-- rnb-text-end --&gt;
-
-
-&lt;!-- rnb-chunk-begin --&gt;
-
-
-&lt;!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYGBgclxuIyBHZXQgQmlsbGJvYXJkIGFsYnVtIGNoYXJ0IGRhdGEgZm9yIFN1ZmphblxuYmlsbGJvYXJkICA8LSByZWFkX2V4Y2VsKFxcRGF0YS9iaWxsYm9hcmQueGxzeFxcKVxuXG4jIE1lcmdlIEJpbGxib2FyZCBkYXRhIHdpdGggYWxidW0gZGF0YVxuYWxidW1zIDwtIGFsYnVtcyAlPiUgXG4gIGxlZnRfam9pbihiaWxsYm9hcmQpXG5gYGBcbmBgYCJ9 --&gt;
-
-```r
-```r
-# Get Billboard album chart data for Sufjan
-billboard  &lt;- read_excel(\Data/billboard.xlsx\)
-
-# Merge Billboard data with album data
-albums &lt;- albums %&gt;% 
-  left_join(billboard)</code></pre>
-<pre><code>
-&lt;!-- rnb-source-end --&gt;
-
-&lt;!-- rnb-output-begin eyJkYXRhIjoiSm9pbmluZyB3aXRoIGBieSA9IGpvaW5fYnkobmFtZSlgXG4ifQ== --&gt;
-</code></pre>
-<p>Joining with <code>by = join_by(name)</code> ```</p>
-<!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <!-- rnb-text-end -->
-</div>
 
-<div id="rmd-source-code">LS0tDQp0aXRsZTogIkRhdGEgQ29sbGVjdGlvbiINCm91dHB1dDogaHRtbF9ub3RlYm9vaw0KYXV0aG9yOiAiWmF5bmUgU2VtYmVyIg0KLS0tDQoNCmBgYHtyIHNldHVwfQ0KbGlicmFyeSh0aWR5dmVyc2UpDQpsaWJyYXJ5KHNwb3RpZnlyKQ0KbGlicmFyeShodHRwdXYpDQpsaWJyYXJ5KHJlYWR4bCkNCmBgYA0KDQojIEF1dGhlbnRpY2F0aW9uIHdpdGggdGhlIFNwb3RpZnkgQVBJDQpgYGB7cn0NCiMgR2V0IEFQSSBjcmVkZW50aWFscw0Kc2VjcmV0cyA8LSByZWFkLmRlbGltKCJzZWNyZXRzLnR4dCIsIGhlYWRlcj1GKQ0KDQojIFNldCBlbnZpcm9ubWVudCB2YXJpYWJsZXMgZm9yIGF1dGhvcml6YXRpb24NClN5cy5zZXRlbnYoU1BPVElGWV9DTElFTlRfSUQgPSBzZWNyZXRzW1sxXV1bMV0pDQpTeXMuc2V0ZW52KFNQT1RJRllfQ0xJRU5UX1NFQ1JFVCA9IHNlY3JldHNbWzFdXVsyXSkNCg0KIyBBdXRoZW50aWNhdGUNCiMgTm90ZTogZGVmYXVsdCBvZiBhbGwgc2NvcGVzIGlzIGJyb2tlbiBidXQgc2luY2Ugd2UncmUgb25seSBhY2Nlc3NpbmcNCiMgcHVibGljIGluZm8gbm8gc2NvcGUgcGVybWlzc2lvbnMgYXJlIHJlYWxseSBuZWVkZWQNCmFjY2Vzc190b2tlbiA8LSBnZXRfc3BvdGlmeV9hdXRob3JpemF0aW9uX2NvZGUoDQogIGNsaWVudF9pZCA9IHNlY3JldHNbWzFdXVsxXSwgY2xpZW50X3NlY3JldD1zZWNyZXRzW1sxXV1bMl0sDQogIHNjb3BlPXNjb3BlcygpWzddDQopDQoNCiMgU3BvdGlmeSBhcnRpc3QgSUQgZm9yIFN1Zmphbg0Kc3VmamFuIDwtICc0TVhVTzdzVkNhRmdGam9USTVveDVjJw0KYGBgDQoNCiMgR2V0dGluZyBkYXRhIGZyb20gU3BvdGlmeQ0KYGBge3J9DQojIEdldCBhbGwgYXJ0aXN0IG1ldGFkYXRhDQphcnRpc3QgPC0gZ2V0X2FydGlzdChzdWZqYW4pDQoNCiMgR2V0IGFsbCBhbGJ1bSBtZXRhZGF0YSBhbmQgc2VsZWN0IHdoYXQgd2Ugd2FudA0KYWxidW1zIDwtIGdldF9hcnRpc3RfYWxidW1zKHN1ZmphbiwgbGltaXQ9NTApDQphbGJ1bXMgPC0gYWxidW1zICU+JSANCiAgc2VsZWN0KGlkLCBuYW1lLCByZWxlYXNlX2RhdGUsIHRvdGFsX3RyYWNrcykNCg0KIyBTcG90aWZ5IGhhcyBhIHJlaXNzdWUgb2YgQSBTdW4gQ2FtZSEgc28gd2UgbmVlZCB0byBjb3JyZWN0IHRoZSBuYW1lDQojIGFuZCByZWxlYXNlIGRhdGUgdG8gcmVmbGVjdCB0aGUgb3JpZ2luYWwgcmVsZWFzZSAodHJhY2tzIGFyZSB0aGUgc2FtZSkNCmFsYnVtcyRuYW1lW2FsYnVtcyRpZD09IjdHcFdjQXRRMmRtbjdDcGI0YVpHZmMiXSA8LSAiQSBTdW4gQ2FtZSEiDQphbGJ1bXMkcmVsZWFzZV9kYXRlW2FsYnVtcyRpZD09IjdHcFdjQXRRMmRtbjdDcGI0YVpHZmMiXSA8LSAiMTk5OS0wNi0xMyINCg0KIyBHZXQgYWxidW0gbmFtZXMgYW5kIGlkcyBvZiBpbnRlcmVzdCAobm9uLWluc3RydW1lbnRhbC9saXZlIGFsYnVtcykNCmFsYnVtX25hbWVzIDwtIGFsYnVtcyRuYW1lW2MoMiw0LDEwLDEyLDEzLDE3LDE4LDE5LDIxLDIyKV0NCmFsYnVtX2lkcyA8LSBhbGJ1bXMkaWRbYygyLDQsMTAsMTIsMTMsMTcsMTgsMTksMjEsMjIpXQ0KDQojIE1hbnVhbGx5IGdldHRpbmcgdHJhY2tzIGJlY2F1c2UgZ2V0X2FsYnVtX3RyYWNrcygpIGRvZXNuJ3QgcGxheSBuaWNlIHdpdGgNCiMgZm9yIGxvb3Agb3IgbGFwcGx5KCkNCmExIDwtIGdldF9hbGJ1bV90cmFja3MoaWQ9YWxidW1faWRzWzFdLCBsaW1pdD01MCkgJT4lIA0KICBzZWxlY3QobmFtZSwgaWQsIGR1cmF0aW9uX21zLCB0cmFja19udW1iZXIpICU+JSANCiAgbXV0YXRlKGFsYnVtX25hbWU9KGFsYnVtcyAlPiUgZmlsdGVyKGlkPT1hbGJ1bV9pZHNbMV0pKSRuYW1lLA0KICAgICAgICAgYWxidW1faWQ9KGFsYnVtcyAlPiUgZmlsdGVyKGlkPT1hbGJ1bV9pZHNbMV0pKSRpZCkNCg0KYTIgPC0gZ2V0X2FsYnVtX3RyYWNrcyhpZD1hbGJ1bV9pZHNbMl0sIGxpbWl0PTUwKSAlPiUgDQogIHNlbGVjdChuYW1lLCBpZCwgZHVyYXRpb25fbXMsIHRyYWNrX251bWJlcikgJT4lIA0KICBtdXRhdGUoYWxidW1fbmFtZT0oYWxidW1zICU+JSBmaWx0ZXIoaWQ9PWFsYnVtX2lkc1syXSkpJG5hbWUsDQogICAgICAgICBhbGJ1bV9pZD0oYWxidW1zICU+JSBmaWx0ZXIoaWQ9PWFsYnVtX2lkc1syXSkpJGlkKQ0KDQphMyA8LSBnZXRfYWxidW1fdHJhY2tzKGlkPWFsYnVtX2lkc1szXSwgbGltaXQ9NTApICU+JSANCiAgc2VsZWN0KG5hbWUsIGlkLCBkdXJhdGlvbl9tcywgdHJhY2tfbnVtYmVyKSAlPiUgDQogIG11dGF0ZShhbGJ1bV9uYW1lPShhbGJ1bXMgJT4lIGZpbHRlcihpZD09YWxidW1faWRzWzNdKSkkbmFtZSwNCiAgICAgICAgIGFsYnVtX2lkPShhbGJ1bXMgJT4lIGZpbHRlcihpZD09YWxidW1faWRzWzNdKSkkaWQpDQoNCmE0IDwtIGdldF9hbGJ1bV90cmFja3MoaWQ9YWxidW1faWRzWzRdLCBsaW1pdD01MCkgJT4lIA0KICBzZWxlY3QobmFtZSwgaWQsIGR1cmF0aW9uX21zLCB0cmFja19udW1iZXIpICU+JSANCiAgbXV0YXRlKGFsYnVtX25hbWU9KGFsYnVtcyAlPiUgZmlsdGVyKGlkPT1hbGJ1bV9pZHNbNF0pKSRuYW1lLA0KICAgICAgICAgYWxidW1faWQ9KGFsYnVtcyAlPiUgZmlsdGVyKGlkPT1hbGJ1bV9pZHNbNF0pKSRpZCkNCg0KYTUgPC0gZ2V0X2FsYnVtX3RyYWNrcyhpZD1hbGJ1bV9pZHNbNV0sIGxpbWl0PTUwKSAlPiUgDQogIHNlbGVjdChuYW1lLCBpZCwgZHVyYXRpb25fbXMsIHRyYWNrX251bWJlcikgJT4lIA0KICBtdXRhdGUoYWxidW1fbmFtZT0oYWxidW1zICU+JSBmaWx0ZXIoaWQ9PWFsYnVtX2lkc1s1XSkpJG5hbWUsDQogICAgICAgICBhbGJ1bV9pZD0oYWxidW1zICU+JSBmaWx0ZXIoaWQ9PWFsYnVtX2lkc1s1XSkpJGlkKQ0KDQphNiA8LSBnZXRfYWxidW1fdHJhY2tzKGlkPWFsYnVtX2lkc1s2XSwgbGltaXQ9NTApICU+JSANCiAgc2VsZWN0KG5hbWUsIGlkLCBkdXJhdGlvbl9tcywgdHJhY2tfbnVtYmVyKSAlPiUgDQogIG11dGF0ZShhbGJ1bV9uYW1lPShhbGJ1bXMgJT4lIGZpbHRlcihpZD09YWxidW1faWRzWzZdKSkkbmFtZSwNCiAgICAgICAgIGFsYnVtX2lkPShhbGJ1bXMgJT4lIGZpbHRlcihpZD09YWxidW1faWRzWzZdKSkkaWQpDQoNCmE3IDwtIGdldF9hbGJ1bV90cmFja3MoaWQ9YWxidW1faWRzWzddLCBsaW1pdD01MCkgJT4lIA0KICBzZWxlY3QobmFtZSwgaWQsIGR1cmF0aW9uX21zLCB0cmFja19udW1iZXIpICU+JSANCiAgbXV0YXRlKGFsYnVtX25hbWU9KGFsYnVtcyAlPiUgZmlsdGVyKGlkPT1hbGJ1bV9pZHNbN10pKSRuYW1lLA0KICAgICAgICAgYWxidW1faWQ9KGFsYnVtcyAlPiUgZmlsdGVyKGlkPT1hbGJ1bV9pZHNbN10pKSRpZCkNCg0KYTggPC0gZ2V0X2FsYnVtX3RyYWNrcyhpZD1hbGJ1bV9pZHNbOF0sIGxpbWl0PTUwKSAlPiUgDQogIHNlbGVjdChuYW1lLCBpZCwgZHVyYXRpb25fbXMsIHRyYWNrX251bWJlcikgJT4lIA0KICBtdXRhdGUoYWxidW1fbmFtZT0oYWxidW1zICU+JSBmaWx0ZXIoaWQ9PWFsYnVtX2lkc1s4XSkpJG5hbWUsDQogICAgICAgICBhbGJ1bV9pZD0oYWxidW1zICU+JSBmaWx0ZXIoaWQ9PWFsYnVtX2lkc1s4XSkpJGlkKQ0KDQojIEJpbmQgaW50byBvbmUgZGF0YWZyYW1lDQp0cmFja3MgPC0gcmJpbmQoYTEsIGEyLCBhMywgYTQsIGE1LCBhNiwgYTcsIGE4KQ0KDQojIFJlbW92ZSB0ZW1wIHZhcmlhYmxlcw0Kcm0oYTEsIGEyLCBhMywgYTQsIGE1LCBhNiwgYTcsIGE4KQ0KYGBgDQoNCiMgTWVyZ2luZyBUaW1lIFNpZ25hdHVyZQ0KYGBge3J9DQojIFJlYWQgaW4gY2xlYW5lZCB1cCB0aW1lIHNpZ25hdHVyZSBkYXRhIHRha2VuIGZyb206DQojIGh0dHBzOi8vZG9jcy5nb29nbGUuY29tL3NwcmVhZHNoZWV0cy9kLzFBU0tidVduZUV5WDFfOFdmeGpLV0ZpMFUxT1hKOEpibmVmOHpMclEwMVdrL2VkaXQjZ2lkPTANCnRpbWVTaWduYXR1cmVzIDwtIHJlYWRfZXhjZWwoIkRhdGEvdGltZXNpZ25hdHVyZXMueGxzeCIsIHNoZWV0PSJNYWluIERpc2NvZ3JhcGh5IikNCg0KIyBNZXJnZSB0aGUgdGltZSBzaWduYXR1cmVzIGludG8gdGhlIHRyYWNrIGRhdGFzZXQNCnRyYWNrcyA8LSB0cmFja3MgJT4lIA0KICBtdXRhdGUobmFtZTE9Y2FzZV93aGVuKA0KICAgIG5jaGFyKG5hbWUpID49IDIwIH4gc3Vic3RyKHRvbG93ZXIobmFtZSksIDEsIDIwKSwNCiAgICBUIH4gdG9sb3dlcihuYW1lKQ0KICAgICkpICU+JSANCiAgbGVmdF9qb2luKHRpbWVTaWduYXR1cmVzICU+JSANCiAgICAgICAgICAgICAgbXV0YXRlKG5hbWUxPWNhc2Vfd2hlbigNCiAgICAgICAgICAgICAgICAgICAgICAgICAgICBuY2hhcihuYW1lKSA+PSAyMCB+IHRvbG93ZXIoc3Vic3RyKG5hbWUsIDEsIDIwKSksDQogICAgICAgICAgICAgICAgICAgICAgICAgICAgVCB+IHRvbG93ZXIobmFtZSkpKSwgDQogICAgICAgICAgICBieT0ibmFtZTEiKSAlPiUgDQogIHNlbGVjdCgtbmFtZTEsIC1uYW1lLnkpICU+JSANCiAgcmVuYW1lKG5hbWU9Im5hbWUueCIpDQpgYGANCg0KIyBNZXJnaW5nIEJpbGxib2FyZCBkYXRhDQpgYGB7cn0NCiMgR2V0IEJpbGxib2FyZCBhbGJ1bSBjaGFydCBkYXRhIGZvciBTdWZqYW4NCmJpbGxib2FyZCAgPC0gcmVhZF9leGNlbCgiRGF0YS9iaWxsYm9hcmQueGxzeCIpDQoNCiMgTWVyZ2UgQmlsbGJvYXJkIGRhdGEgd2l0aCBhbGJ1bSBkYXRhDQphbGJ1bXMgPC0gYWxidW1zICU+JSANCiAgbGVmdF9qb2luKGJpbGxib2FyZCkNCmBgYA0KDQo=</div>
+<div id="rmd-source-code">LS0tDQp0aXRsZTogIlN1ZmphblNlbnRpbWVudCBWaXN1YWxpemF0aW9uIg0KYXV0aG9yOiAiWmF5bmUgU2VtYmVyIg0Kb3V0cHV0OiBodG1sX25vdGVib29rDQotLS0NCg0KYGBge3Igc2V0dXB9DQpsaWJyYXJ5KHRpZHl2ZXJzZSkNCmBgYA0KDQoNCg0K</div>
 
 
 
@@ -2032,7 +1810,7 @@ $(document).ready(function () {
 <!-- code folding -->
 <script>
 $(document).ready(function () {
-  window.initializeSourceEmbed("DataCollection.Rmd");
+  window.initializeSourceEmbed("Visualization.Rmd");
   window.initializeCodeFolding("show" === "show");
 });
 </script>
