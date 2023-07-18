@@ -108,6 +108,32 @@ tracks <- rbind(a1, a2, a3, a4, a5, a6, a7, a8, a9, a10)
 
 # Remove temp variables
 rm(a1, a2, a3, a4, a5, a6, a7, a8, a9, a10)
+
+# Get other track info
+# FINISH
+getTrackAnalysis <- function(ids){
+  length = length(ids)
+  data <- get_track_audio_analysis(ids[])
+  data2 <- get_track_audio_features(id)
+  
+  retVal <- c(id=id,
+              loudness=temp$track[["loudness"]],
+              tempo=data$track[["tempo"]],
+              tempo_confidence=data$track[["tempo_confidence"]],
+              time_signature_spotify=data$track[["time_signature"]],
+              time_signature_confidence_spotify=data$track[["time_signature_confidence"]],
+              key=data$track[["key"]],
+              speechiness=data2$speechiness,
+              acousticness=data2$acousticness,
+              instrumentalness=data2$instrumentalness,
+              liveness=data2$liveness,
+              valence=data2$valence)
+  return(retVal)
+}
+
+temp <- getTrackAnalysis(tracks$id)
+
+
 ```
 
 # Merging Time Signature
