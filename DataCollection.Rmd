@@ -93,11 +93,21 @@ a8 <- get_album_tracks(id=album_ids[8], limit=50) %>%
   mutate(album_name=(albums %>% filter(id==album_ids[8]))$name,
          album_id=(albums %>% filter(id==album_ids[8]))$id)
 
+a9 <- get_album_tracks(id=album_ids[9], limit=50) %>% 
+  select(name, id, duration_ms, track_number) %>% 
+  mutate(album_name=(albums %>% filter(id==album_ids[9]))$name,
+         album_id=(albums %>% filter(id==album_ids[9]))$id)
+
+a10 <- get_album_tracks(id=album_ids[10], limit=50) %>% 
+  select(name, id, duration_ms, track_number) %>% 
+  mutate(album_name=(albums %>% filter(id==album_ids[10]))$name,
+         album_id=(albums %>% filter(id==album_ids[10]))$id)
+
 # Bind into one dataframe
-tracks <- rbind(a1, a2, a3, a4, a5, a6, a7, a8)
+tracks <- rbind(a1, a2, a3, a4, a5, a6, a7, a8, a9, a10)
 
 # Remove temp variables
-rm(a1, a2, a3, a4, a5, a6, a7, a8)
+rm(a1, a2, a3, a4, a5, a6, a7, a8, a9, a10)
 ```
 
 # Merging Time Signature
@@ -130,4 +140,19 @@ billboard  <- read_excel("Data/billboard.xlsx")
 albums <- albums %>% 
   left_join(billboard)
 ```
+
+# Reading in lyric data
+```{r}
+track_lyrics 
+```
+
+
+
+# Save the data
+```{r}
+saveRDS(albums, "/Data/RDS Files/albums.rmd")
+saveRDS(artist, "/Data/RDS Files/artist.rmd")
+saveRDS(tracks, "/Data/RDS Files/tracks.rmd")
+```
+
 

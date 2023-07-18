@@ -8,5 +8,59 @@ output: html_notebook
 library(tidyverse)
 ```
 
+```{r}
+artist <- readRDS("../Data/RDS Files/artist.rmd")
+albums <- readRDS("../Data/RDS Files/albums.rmd")
+tracks <- readRDS("../Data/RDS Files/tracks.rmd")
+```
+
+```{r}
+df_dur <- tracks %>% 
+  mutate(duration_s = duration_ms/1000) %>% 
+  mutate(duration_min = duration_s/60) %>% 
+  left_join(albums %>% select(id, release_date), 
+            by=c(album_id="id")) %>% 
+  arrange(release_date) %>% 
+  mutate(order=row_number())
+
+library(jpeg)
+
+albumpaths <- paste0("Data/AlbumCovers/", c("ASunCame", "Michigan", "SevenSwans", "Illinois", "TheAvalanche", "TheAgeOfAdz", "AllDelightedPeople", "CarrieAndLowell", "TheAscension", "ABeginnersMind"), ".jpg")
+
+imgs <- lapply(albumpaths, readJPEG)
+
+df_dur %>% 
+  ggplot(aes(y=duration_min,x=order, fill=factor(album_name))) +
+  geom_bar(stat="identity",position="dodge", width=.5) +
+  labs(y="Track duration (min.)") +
+  scale_y_continuous(breaks=c(1,2,3,4,5,7,10,15,20,25)) +
+  scale_x_discrete(expand = c(0,0)) +
+  theme_void() +
+  theme(
+    axis.text.y = element_text(size=7),
+    axis.title.y = element_text(angle=90, size=9, 
+                                margin=margin(0,5,0,0, unit="pt")),
+    legend.position="none",
+    strip.background = element_blank(),
+    strip.text = element_text(angle=0, size=5, 
+                              margin=margin(1.17,0,0,0, unit="cm")),
+    #strip.text = element_blank(),
+    panel.spacing = unit(.05, "lines"),
+    plot.margin = margin(0,.05,.05,0, unit="cm")
+  ) +
+  facet_wrap(~factor(album_name, 
+                     levels=unique(df_dur$album_name),), nrow=1, 
+             strip.position="bottom",
+             scales="free_x",
+             labeller=label_wrap_gen(15)) +
+  annotation_raster(imgs[[1]], xmin=-Inf, xmax=Inf,
+                    ymin=-.25, ymax=-5.5) +
+  coord_cartesian(clip = 'off')
+  
+```
+
+
+
+
 
 
