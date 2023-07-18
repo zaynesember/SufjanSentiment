@@ -150,9 +150,9 @@ track_lyrics
 
 # Save the data
 ```{r}
-saveRDS(albums, "/Data/RDS Files/albums.rmd")
-saveRDS(artist, "/Data/RDS Files/artist.rmd")
-saveRDS(tracks, "/Data/RDS Files/tracks.rmd")
+saveRDS(albums, "Data/RDS Files/albums.rds")
+saveRDS(artist, "Data/RDS Files/artist.rds")
+saveRDS(tracks, "Data/RDS Files/tracks.rds")
 ```
 
 
