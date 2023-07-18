@@ -9,9 +9,9 @@ library(tidyverse)
 ```
 
 ```{r}
-artist <- readRDS("../Data/RDS Files/artist.rmd")
-albums <- readRDS("../Data/RDS Files/albums.rmd")
-tracks <- readRDS("../Data/RDS Files/tracks.rmd")
+artist <- readRDS("../Data/RDS Files/artist.rds")
+albums <- readRDS("../Data/RDS Files/albums.rds")
+tracks <- readRDS("../Data/RDS Files/tracks.rds")
 ```
 
 ```{r}
