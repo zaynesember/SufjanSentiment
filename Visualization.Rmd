@@ -27,7 +27,7 @@ tracks <- readRDS("Data/RDS Files/tracks.rds")
 ```
 
 ```{r}
-df_dur <- tracks %>% 
+df_trackviz <- tracks %>% 
   mutate(duration_s = duration_ms/1000) %>% 
   mutate(duration_min = duration_s/60) %>% 
   left_join(albums %>% select(id, release_date), 
@@ -43,19 +43,6 @@ imgs <- lapply(albumpaths, readJPEG)
 ```
 
 ```{r}
-# a1 = annotation_custom2(rasterGrob(imgs[[1]], interpolate=TRUE), 
-#                         xmin=-Inf, xmax=Inf, ymin=-.25, ymax=-4.5, 
-#                         data=subset(df_dur, album_name == unique(df_dur$album_name)[1]))
-# 
-# a2 = annotation_custom2(rasterGrob(imgs[[2]], interpolate=TRUE), 
-#                         xmin=-Inf, xmax=Inf, ymin=-.25, ymax=-4.5, 
-#                         data=subset(df_dur, album_name == unique(df_dur$album_name)[2]))
-
-
-annotations <- mapply(FUN=annotation_custom2, grob=imgs, subset=unique(df_dur$album_name),
-                      MoreArgs=list(xmin=-Inf, xmax=Inf, 
-                                    ymin=-.1, ymax=-4.75, data=df_dur))
-
 fills <- c("#7b7644", "#d32831", "#c2b9a6", "#4d758c", "#e8681b", 
            "#ae3625", "#b37f61", "#334249", "#f8ed3a", "#1769a1")
 
@@ -64,9 +51,16 @@ colors <- c("#c3a8a3", "#b9d3c6", "#010508", "#fbe956", "#7793a8",
 
 fills2 <- c("#7b7644", "#d32831", "#010508", "#4d758c", "#e8681b", 
            "#ae3625", "#b37f61", "#334249", "#f8a139", "#1769a1")
-names(fills2) <- unique(df_dur$album_name)
+names(fills2) <- unique(df_trackviz$album_name)
+```
 
-df_dur %>% 
+```{r}
+annotations <- mapply(FUN=annotation_custom2, grob=imgs, 
+                      subset=unique(df_trackviz$album_name),
+                      MoreArgs=list(xmin=-Inf, xmax=Inf, 
+                                    ymin=-.1, ymax=-4.75, data=df_trackviz))
+
+df_trackviz %>% 
   ggplot(aes(y=duration_min,x=order, fill=factor(album_name))) +
   geom_bar(stat="identity",position="dodge", width=.55) +
   labs(y="Track duration (min.)") +
@@ -92,12 +86,10 @@ df_dur %>%
                                     linewidth=.25, linetype="dotted")
   ) +
   facet_wrap(~factor(album_name, 
-                     levels=unique(df_dur$album_name),), nrow=1, 
+                     levels=unique(df_trackviz$album_name),), nrow=1, 
              strip.position="bottom",
              scales="free_x",
              labeller=label_wrap_gen(15)) +
-  # annotation_raster(imgs[[1]], xmin=-Inf, xmax=Inf,
-  #                   ymin=-.25, ymax=-5.5) +
   annotations[[1]] +
   annotations[[2]] +
   annotations[[3]] +
@@ -109,13 +101,59 @@ df_dur %>%
   annotations[[9]] +
   annotations[[10]] +
   coord_cartesian(clip = 'off')
-  
 ```
 
 ```{r}
+annotations <- mapply(FUN=annotation_custom2, grob=imgs, 
+                      subset=unique(df_trackviz$album_name),
+                      MoreArgs=list(xmin=-Inf, xmax=Inf, 
+                                    ymin=-1.25, ymax=-40, data=df_trackviz))
 
+df_trackviz %>% 
+  bind_rows(df_trackviz %>% mutate(tempo=0)) %>% 
+  ggplot(aes(y=tempo, x=order, color=factor(album_name))) +
+    #geom_bar(stat="identity",position="dodge", width=.55) +
+    geom_point(size=.9) +
+    geom_line() +
+    labs(y="Track tempo (bpm)") +
+    #scale_y_continuous(breaks=c(1,2,3,4,5,7,10,15,20,25)) +
+    scale_x_discrete(expand = c(0,0)) +
+    scale_color_manual(values=fills2) +
+    #scale_fill_manual(values=fills2) +
+    theme_void() +
+    theme(
+      axis.text.y = element_text(size=7),
+      axis.title.y = element_text(angle=90, size=9, 
+                                  margin=margin(0,5,0,0, unit="pt")),
+      legend.position="none",
+      strip.background = element_blank(),
+      strip.text = element_text(angle=0, size=0, color="ivory",
+                                margin=margin(1.19,0,0,0, unit="cm")),
+      #strip.text = element_blank(),
+      panel.spacing = unit(.15, "lines"),
+      plot.margin = margin(0,.05,.15,0, unit="cm"),
+      panel.background = element_rect(fill="ivory", color="ivory"),
+      plot.background = element_rect(fill="ivory"),
+      panel.grid.major = element_line(color="seashell3", 
+                                      linewidth=.25, linetype="dotted")
+    ) +
+    facet_wrap(~factor(album_name, 
+                       levels=unique(df_trackviz$album_name),), nrow=1, 
+               strip.position="bottom",
+               scales="free_x",
+               labeller=label_wrap_gen(15)) +
+    annotations[[1]] +
+    annotations[[2]] +
+    annotations[[3]] +
+    annotations[[4]] +
+    annotations[[5]] +
+    annotations[[6]] +
+    annotations[[7]] +
+    annotations[[8]] +
+    annotations[[9]] +
+    annotations[[10]] +
+    coord_cartesian(clip = 'off')
 ```
-
 
 
 

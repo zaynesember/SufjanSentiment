@@ -1,0 +1,498 @@
+---
+title: "Sufjan Sentiment"
+author: |
+  | Zayne Sember <zsember@ucsd.edu>
+output: html_notebook
+---
+
+```{r, message=FALSE}
+library(tm)
+library(SnowballC)
+library(wordcloud)
+library(RColorBrewer)
+library(syuzhet)
+library(ggplot2)
+library(tidyverse)
+library(gridExtra)
+library(ggpubr)
+library(gdata)
+```
+
+```{r}
+# Taken from https://www.red-gate.com/simple-talk/sql/bi/text-mining-and-sentiment-analysis-with-r/
+
+# Read in the text
+illinois_lyrics <- readLines("TextData/Illinois.txt")
+# Make it a corpus
+illinois_corpus <- Corpus(VectorSource(illinois_lyrics))
+# Convert the text to lower case
+illinois_corpus <- tm_map(illinois_corpus, content_transformer(tolower))
+# Remove numbers
+illinois_corpus <- tm_map(illinois_corpus, removeNumbers)
+# Remove english common stopwords
+illinois_corpus <- tm_map(illinois_corpus, removeWords, stopwords("english"))
+# Remove punctuations
+illinois_corpus <- tm_map(illinois_corpus, removePunctuation)
+# Eliminate extra white spaces
+illinois_corpus <- tm_map(illinois_corpus, stripWhitespace)
+illinois_unstemmed <- illinois_corpus
+# Text stemming - which reduces words to their root form
+illinois_corpus <- tm_map(illinois_corpus, stemDocument)
+# Build a term-document matrix
+illinois_termdoc <- TermDocumentMatrix(illinois_corpus)
+illinois_matrix <- as.matrix(illinois_termdoc)
+# Sort by decreasing value of frequency
+illinois_v <- sort(rowSums(illinois_matrix),decreasing=TRUE)
+illinois_d <- data.frame(word = names(illinois_v),freq=illinois_v)
+# Build a term-document matrix
+illinois_wc <- TermDocumentMatrix(illinois_unstemmed)
+illinois_wc <- as.matrix(illinois_wc)
+# Sort by decreasing value of frequency
+illinois_wc <- sort(rowSums(illinois_wc),decreasing=TRUE)
+illinois_wc <- data.frame(word = names(illinois_wc),freq=illinois_wc)
+
+illinois_cols <- c("#7E7A6F", "#29556E", "#EC9D7E", "#FDE856", "#EB772E")
+
+illinois_sentiment <- get_sentiment(illinois_lyrics)
+print("illinois summary")
+summary(illinois_sentiment)
+
+illinois_nrc<-get_nrc_sentiment(illinois_lyrics)
+
+
+#transpose
+illinois_nrc<-data.frame(t(illinois_nrc))
+#The function rowSums computes column sums across rows for each level of a grouping variable.
+illinois_mean <- data.frame(rowSums(illinois_nrc))
+#Transformation and cleaning
+names(illinois_mean)[1] <- "count"
+illinois_mean <- cbind("sentiment" = rownames(illinois_mean), 
+                            illinois_mean)
+rownames(illinois_mean) <- NULL
+illinois_mean<-illinois_mean[1:8,]
+
+# Rinse and repeat
+adz_lyrics <- readLines("TextData/AgeOfAdz.txt")
+adz_corpus <- Corpus(VectorSource(adz_lyrics))
+adz_corpus <- tm_map(adz_corpus, content_transformer(tolower))
+adz_corpus <- tm_map(adz_corpus, removeNumbers)
+adz_corpus <- tm_map(adz_corpus, removeWords, stopwords("english"))
+adz_corpus <- tm_map(adz_corpus, removePunctuation)
+adz_corpus <- tm_map(adz_corpus, stripWhitespace)
+adz_unstemmed <- adz_corpus
+adz_corpus <- tm_map(adz_corpus, stemDocument)
+
+adz_termdoc <- TermDocumentMatrix(adz_corpus)
+adz_matrix <- as.matrix(adz_termdoc)
+adz_v <- sort(rowSums(adz_matrix),decreasing=TRUE)
+adz_d <- data.frame(word = names(adz_v),freq=adz_v)
+
+adz_wc <- TermDocumentMatrix(adz_unstemmed)
+adz_wc <- as.matrix(adz_wc)
+adz_wc <- sort(rowSums(adz_wc),decreasing=TRUE)
+adz_wc <- data.frame(word = names(adz_wc),freq=adz_wc)
+
+adz_cols <- c("#A93423", "#0C0201", "#FFFFFF", "#A32E1D")
+
+adz_sentiment <- get_sentiment(adz_lyrics)
+print("adz summary")
+summary(adz_sentiment)
+
+adz_nrc<-get_nrc_sentiment(adz_lyrics)
+
+
+adz_nrc<-data.frame(t(adz_nrc))
+
+adz_mean <- data.frame(rowSums(adz_nrc))
+
+names(adz_mean)[1] <- "count"
+adz_mean <- cbind("sentiment" = rownames(adz_mean), 
+                            adz_mean)
+rownames(adz_mean) <- NULL
+adz_mean<-adz_mean[1:8,]
+
+suncame_lyrics <- readLines("TextData/ASunCame.txt")
+suncame_corpus <- Corpus(VectorSource(suncame_lyrics))
+suncame_corpus <- tm_map(suncame_corpus, content_transformer(tolower))
+suncame_corpus <- tm_map(suncame_corpus, removeNumbers)
+suncame_corpus <- tm_map(suncame_corpus, removeWords, stopwords("english"))
+suncame_corpus <- tm_map(suncame_corpus, removePunctuation)
+suncame_corpus <- tm_map(suncame_corpus, stripWhitespace)
+suncame_unstemmed <- suncame_corpus
+suncame_corpus <- tm_map(suncame_corpus, stemDocument)
+
+suncame_termdoc <- TermDocumentMatrix(suncame_corpus)
+suncame_matrix <- as.matrix(suncame_termdoc)
+suncame_v <- sort(rowSums(suncame_matrix),decreasing=TRUE)
+suncame_d <- data.frame(word = names(suncame_v),freq=suncame_v)
+
+suncame_wc <- TermDocumentMatrix(suncame_unstemmed)
+suncame_wc <- as.matrix(suncame_wc)
+suncame_wc <- sort(rowSums(suncame_wc),decreasing=TRUE)
+suncame_wc <- data.frame(word = names(suncame_wc),freq=suncame_wc)
+
+suncame_cols <- c("#858263", "#F47883", "#B8B4B1", "#FECD67", "#ECBCA8")
+
+suncame_sentiment <- get_sentiment(suncame_lyrics)
+print("suncame summary")
+summary(suncame_sentiment)
+
+suncame_nrc<-get_nrc_sentiment(suncame_lyrics)
+
+
+suncame_nrc<-data.frame(t(suncame_nrc))
+
+suncame_mean <- data.frame(rowSums(suncame_nrc))
+
+names(suncame_mean)[1] <- "count"
+suncame_mean <- cbind("sentiment" = rownames(suncame_mean), 
+                            suncame_mean)
+rownames(suncame_mean) <- NULL
+suncame_mean<-suncame_mean[1:8,]
+
+carrielowell_lyrics <- readLines("TextData/CarrieAndLowell.txt")
+carrielowell_corpus <- Corpus(VectorSource(carrielowell_lyrics))
+carrielowell_corpus <- tm_map(carrielowell_corpus, content_transformer(tolower))
+carrielowell_corpus <- tm_map(carrielowell_corpus, removeNumbers)
+carrielowell_corpus <- tm_map(carrielowell_corpus, removeWords, stopwords("english"))
+carrielowell_corpus <- tm_map(carrielowell_corpus, removePunctuation)
+carrielowell_corpus <- tm_map(carrielowell_corpus, stripWhitespace)
+carrielowell_unstemmed <- carrielowell_corpus
+carrielowell_corpus <- tm_map(carrielowell_corpus, stemDocument)
+
+carrielowell_termdoc <- TermDocumentMatrix(carrielowell_corpus)
+carrielowell_matrix <- as.matrix(carrielowell_termdoc)
+carrielowell_v <- sort(rowSums(carrielowell_matrix),decreasing=TRUE)
+carrielowell_d <- data.frame(word = names(carrielowell_v),freq=carrielowell_v)
+
+carrielowell_wc <- TermDocumentMatrix(carrielowell_unstemmed)
+carrielowell_wc <- as.matrix(carrielowell_wc)
+carrielowell_wc <- sort(rowSums(carrielowell_wc),decreasing=TRUE)
+carrielowell_wc <- data.frame(word = names(carrielowell_wc),freq=carrielowell_wc)
+
+carrielowell_cols <- c("#5A6D71", "#B5B093", "#4D443D", "#313639", "#A59283")
+
+carrielowell_sentiment <- get_sentiment(carrielowell_lyrics)
+print("carrielowell summary")
+summary(carrielowell_sentiment)
+
+carrielowell_nrc<-get_nrc_sentiment(carrielowell_lyrics)
+
+
+carrielowell_nrc<-data.frame(t(carrielowell_nrc))
+
+carrielowell_mean <- data.frame(rowSums(carrielowell_nrc))
+
+names(carrielowell_mean)[1] <- "count"
+carrielowell_mean <- cbind("sentiment" = rownames(carrielowell_mean), 
+                            carrielowell_mean)
+rownames(carrielowell_mean) <- NULL
+carrielowell_mean<-carrielowell_mean[1:8,]
+
+michigan_lyrics <- readLines("TextData/Michigan.txt")
+michigan_corpus <- Corpus(VectorSource(michigan_lyrics))
+michigan_corpus <- tm_map(michigan_corpus, content_transformer(tolower))
+michigan_corpus <- tm_map(michigan_corpus, removeNumbers)
+michigan_corpus <- tm_map(michigan_corpus, removeWords, stopwords("english"))
+michigan_corpus <- tm_map(michigan_corpus, removePunctuation)
+michigan_corpus <- tm_map(michigan_corpus, stripWhitespace)
+michigan_unstemmed <- michigan_corpus
+michigan_corpus <- tm_map(michigan_corpus, stemDocument)
+
+michigan_termdoc <- TermDocumentMatrix(michigan_corpus)
+michigan_matrix <- as.matrix(michigan_termdoc)
+michigan_v <- sort(rowSums(michigan_matrix),decreasing=TRUE)
+michigan_d <- data.frame(word = names(michigan_v),freq=michigan_v)
+
+michigan_wc <- TermDocumentMatrix(michigan_unstemmed)
+michigan_wc <- as.matrix(michigan_wc)
+michigan_wc <- sort(rowSums(michigan_wc),decreasing=TRUE)
+michigan_wc <- data.frame(word = names(michigan_wc),freq=michigan_wc)
+
+michigan_cols <- c("#D03233", "#BAD1C7", "#AE985E", "#F6FBFF", "#F4ECD7")
+
+michigan_sentiment <- get_sentiment(michigan_lyrics)
+print("michigan summary")
+summary(michigan_sentiment)
+
+michigan_nrc<-get_nrc_sentiment(michigan_lyrics)
+
+
+michigan_nrc<-data.frame(t(michigan_nrc))
+
+michigan_mean <- data.frame(rowSums(michigan_nrc))
+
+names(michigan_mean)[1] <- "count"
+michigan_mean <- cbind("sentiment" = rownames(michigan_mean), 
+                            michigan_mean)
+rownames(michigan_mean) <- NULL
+michigan_mean<-michigan_mean[1:8,]
+
+sevenswans_lyrics <- readLines("TextData/SevenSwans.txt")
+sevenswans_corpus <- Corpus(VectorSource(sevenswans_lyrics))
+sevenswans_corpus <- tm_map(sevenswans_corpus, content_transformer(tolower))
+sevenswans_corpus <- tm_map(sevenswans_corpus, removeNumbers)
+sevenswans_corpus <- tm_map(sevenswans_corpus, removeWords, stopwords("english"))
+sevenswans_corpus <- tm_map(sevenswans_corpus, removePunctuation)
+sevenswans_corpus <- tm_map(sevenswans_corpus, stripWhitespace)
+sevenswans_unstemmed <- sevenswans_corpus
+sevenswans_corpus <- tm_map(sevenswans_corpus, stemDocument)
+
+sevenswans_termdoc <- TermDocumentMatrix(sevenswans_corpus)
+sevenswans_matrix <- as.matrix(sevenswans_termdoc)
+sevenswans_v <- sort(rowSums(sevenswans_matrix),decreasing=TRUE)
+sevenswans_d <- data.frame(word = names(sevenswans_v),freq=sevenswans_v)
+
+sevenswans_wc <- TermDocumentMatrix(sevenswans_unstemmed)
+sevenswans_wc <- as.matrix(sevenswans_wc)
+sevenswans_wc <- sort(rowSums(sevenswans_wc),decreasing=TRUE)
+sevenswans_wc <- data.frame(word = names(sevenswans_wc),freq=sevenswans_wc)
+
+sevenswans_cols <- c("#EEEAE7", "#89797A", "#CBB29C")
+
+sevenswans_sentiment <- get_sentiment(sevenswans_lyrics)
+print("sevenswans summary")
+summary(sevenswans_sentiment)
+
+sevenswans_nrc<-get_nrc_sentiment(sevenswans_lyrics)
+
+
+sevenswans_nrc<-data.frame(t(sevenswans_nrc))
+
+sevenswans_mean <- data.frame(rowSums(sevenswans_nrc))
+
+names(sevenswans_mean)[1] <- "count"
+sevenswans_mean <- cbind("sentiment" = rownames(sevenswans_mean), 
+                            sevenswans_mean)
+rownames(sevenswans_mean) <- NULL
+sevenswans_mean<-sevenswans_mean[1:8,]
+
+ascension_lyrics <- readLines("TextData/TheAscension.txt")
+ascension_corpus <- Corpus(VectorSource(ascension_lyrics))
+ascension_corpus <- tm_map(ascension_corpus, content_transformer(tolower))
+ascension_corpus <- tm_map(ascension_corpus, removeNumbers)
+ascension_corpus <- tm_map(ascension_corpus, removeWords, stopwords("english"))
+ascension_corpus <- tm_map(ascension_corpus, removePunctuation)
+ascension_corpus <- tm_map(ascension_corpus, stripWhitespace)
+ascension_unstemmed <- ascension_corpus
+ascension_corpus <- tm_map(ascension_corpus, stemDocument)
+
+ascension_termdoc <- TermDocumentMatrix(ascension_corpus)
+ascension_matrix <- as.matrix(ascension_termdoc)
+ascension_v <- sort(rowSums(ascension_matrix),decreasing=TRUE)
+ascension_d <- data.frame(word = names(ascension_v),freq=ascension_v)
+
+ascension_wc <- TermDocumentMatrix(ascension_unstemmed)
+ascension_wc <- as.matrix(ascension_wc)
+ascension_wc <- sort(rowSums(ascension_wc),decreasing=TRUE)
+ascension_wc <- data.frame(word = names(ascension_wc),freq=ascension_wc)
+
+ascension_cols <- c("#F9F04E", "#3C4F93", "#3C3D41", "#EF1C22", "#405291")
+
+ascension_sentiment <- get_sentiment(ascension_lyrics)
+print("ascension summary")
+summary(ascension_sentiment)
+
+ascension_nrc<-get_nrc_sentiment(ascension_lyrics)
+
+
+ascension_nrc<-data.frame(t(ascension_nrc))
+
+ascension_mean <- data.frame(rowSums(ascension_nrc))
+
+names(ascension_mean)[1] <- "count"
+ascension_mean <- cbind("sentiment" = rownames(ascension_mean), 
+                            ascension_mean)
+rownames(ascension_mean) <- NULL
+ascension_mean<-ascension_mean[1:8,]
+```
+
+```{r}
+set.seed(2727)
+par(bg = 'black')
+wordcloud(words=ascension_wc$word, freq=ascension_wc$freq, max.words=100,
+          color=ascension_cols, scale=c(5,0.5))
+```
+```{r}
+par(bg = 'black')
+wordcloud(words=illinois_wc$word, freq=illinois_wc$freq, max.words=100,
+          color=illinois_cols, scale=c(4,0.5))
+```
+```{r}
+par(bg = 'black')
+wordcloud(words=michigan_wc$word, freq=michigan_wc$freq, max.words=100,
+          color=michigan_cols, scale=c(3,0.5))
+```
+```{r}
+par(bg = 'grey')
+wordcloud(words=adz_wc$word, freq=adz_wc$freq, max.words=100,
+          color=adz_cols, scale=c(4,0.5))
+```
+```{r}
+par(bg = 'black')
+wordcloud(words=suncame_wc$word, freq=suncame_wc$freq, max.words=100,
+          color=suncame_cols, scale=c(4,0.5))
+```
+```{r}
+par(bg = 'black')
+wordcloud(words=carrielowell_wc$word, freq=carrielowell_wc$freq, max.words=100,
+          color=carrielowell_cols, scale=c(4,0.25))
+```
+```{r}
+par(bg = 'black')
+wordcloud(words=sevenswans_wc$word, freq=sevenswans_wc$freq, max.words=100,
+          color=sevenswans_cols, scale=c(4,0.25))
+```
+
+```{r}
+
+suncame_plot <- quickplot(sentiment, data=suncame_mean, weight=count, 
+                          geom="bar", fill=sentiment, ylab="count") +
+  ggtitle("A Sun Came") +
+  ylim(c(0,190)) +
+  theme_bw() +
+  theme(legend.position="none",
+        axis.title.x=element_blank(),
+        axis.text.x=element_blank(),
+        axis.ticks.x=element_blank())
+
+michigan_plot <- quickplot(sentiment, data=michigan_mean, weight=count, 
+                           geom="bar", fill=sentiment, ylab="count") +
+  ggtitle("Michigan") +
+  ylim(c(0,190)) +
+  ylab("") +
+  theme_bw() +
+  theme(legend.position="none",
+        axis.title.x=element_blank(),
+        axis.text.x=element_blank(),
+        axis.ticks.x=element_blank())
+
+sevenswans_plot <- quickplot(sentiment, data=sevenswans_mean, weight=count, 
+                             geom="bar", fill=sentiment, ylab="count") +
+  ggtitle("Seven Swans") +
+  ylab("") +
+  ylim(c(0,190)) +
+  theme_bw() +
+  theme(legend.position="none",
+        axis.title.x=element_blank(),
+        axis.text.x=element_blank(),
+        axis.ticks.x=element_blank())
+
+illinois_plot <- quickplot(sentiment, data=illinois_mean, weight=count, 
+                           geom="bar", fill=sentiment, ylab="count") +
+  ggtitle("Illinois") +
+  ylim(c(0,190)) +
+  theme_bw() +
+  theme(legend.position="none",
+        axis.title.x=element_blank(),
+        axis.text.x=element_blank(),
+        axis.ticks.x=element_blank())
+
+adz_plot <- quickplot(sentiment, data=adz_mean, weight=count, 
+                      geom="bar", fill=sentiment, ylab="count") +
+  ggtitle("The Age of Adz") +
+  ylab("") +
+  ylim(c(0,190)) +
+  theme_bw() +
+  theme(legend.position="none",
+        axis.title.x=element_blank(),
+        axis.text.x=element_blank(),
+        axis.ticks.x=element_blank())
+
+carrielowell_plot <- quickplot(sentiment, data=carrielowell_mean, weight=count, 
+                               geom="bar", fill=sentiment, ylab="count") +
+  ggtitle("Carrie & Lowell") +
+  ylab("") +
+  ylim(c(0,190)) +
+  theme_bw() +
+  theme(legend.position="none",
+        axis.title.x=element_blank(),
+        axis.text.x=element_blank(),
+        axis.ticks.x=element_blank())
+
+
+ascension_plot <- quickplot(sentiment, data=ascension_mean, weight=count, 
+                            geom="bar", fill=sentiment, ylab="count") +
+  ggtitle("The Ascension") +
+  ylim(c(0,190)) +
+  theme_bw() +
+  theme(legend.position="none",
+        axis.title.x=element_blank(),
+        axis.text.x=element_blank(),
+        axis.ticks.x=element_blank())
+
+ggpubr::ggarrange(suncame_plot, 
+          michigan_plot,
+          sevenswans_plot,
+          illinois_plot,
+          adz_plot,
+          carrielowell_plot,
+          ascension_plot,
+          ncol=3, nrow=3, common.legend=T, legend = "bottom")
+ggsave("SentimentPlots/BarPlots.png")
+
+```
+```{r}
+sentiments_all <- combine(suncame_mean, michigan_mean, sevenswans_mean,
+                          illinois_mean, adz_mean, carrielowell_mean,
+                          ascension_mean)
+
+sentiments_all$year <- c(rep(1999,8),
+                         rep(2003,8),
+                         rep(2004,8),
+                         rep(2005,8),
+                         rep(2010,8),
+                         rep(2015,8),
+                         rep(2020,8))
+
+xlabels <- c("1999"="A Sun Came (1999)", "2003"="Michigan (2003)", "2004"="Seven Swans (2004)", 
+             "2005"="Illinois (2005)", "2010"="The Age of Adz (2010)", 
+             "2015"="Carrie & Lowell (2015)", "2020"="The Ascension (2020)")
+
+ticks <- c(1999,2003,2004,2005,2010,2015,2020)
+
+ggplot(data=sentiments_all, aes(x=year, y=count, color=sentiment)) +
+  geom_line(lwd=0.8) +
+  scale_x_discrete(labels=xlabels, limits=ticks) +
+  ggtitle("Album Sentiment Over Time") +
+  theme_bw() +
+  theme(
+    axis.text.x=element_text(angle=75, hjust=1)
+  )
+
+ggsave("SentimentPlots/EmotionsPlot.png", dpi=500)
+
+
+suncame_mean$percent <- suncame_mean$count/sum(suncame_mean$count)*100
+michigan_mean$percent <- michigan_mean$count/sum(michigan_mean$count)*100
+sevenswans_mean$percent <- sevenswans_mean$count/sum(sevenswans_mean$count)*100
+illinois_mean$percent <- illinois_mean$count/sum(illinois_mean$count)*100
+adz_mean$percent <- adz_mean$count/sum(adz_mean$count)*100
+carrielowell_mean$percent <- carrielowell_mean$count/sum(carrielowell_mean$count)*100
+ascension_mean$percent <- ascension_mean$count/sum(ascension_mean$count)*100
+
+sentiments_per <- combine(suncame_mean, michigan_mean, sevenswans_mean,
+                          illinois_mean, adz_mean, carrielowell_mean,
+                          ascension_mean)
+
+sentiments_per$year <- c(rep(1999,8),
+                         rep(2003,8),
+                         rep(2004,8),
+                         rep(2005,8),
+                         rep(2010,8),
+                         rep(2015,8),
+                         rep(2020,8))
+
+ggplot(data=sentiments_per, aes(x=year, y=percent, color=sentiment)) +
+  geom_line(lwd=0.8) +
+  scale_x_discrete(labels=xlabels, limits=ticks) +
+  ggtitle("Album Sentiment Over Time") +
+  theme_bw() +
+  theme(
+    axis.text.x=element_text(angle=75, hjust=1)
+  )
+
+ggsave("SentimentPlots/PercentsPlot.png", dpi=500)
+
+```
+
