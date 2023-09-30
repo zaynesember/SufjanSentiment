@@ -4,6 +4,8 @@ author: "Zayne Sember"
 output: html_notebook
 ---
 
+# NOTE TO TO SELF: USE `ggsave()` for high res plots
+
 ```{r setup}
 library(tidyverse)
 library(grid)
@@ -54,6 +56,7 @@ fills2 <- c("#7b7644", "#d32831", "#010508", "#4d758c", "#e8681b",
 names(fills2) <- unique(df_trackviz$album_name)
 ```
 
+# Duration (bar)
 ```{r}
 annotations <- mapply(FUN=annotation_custom2, grob=imgs, 
                       subset=unique(df_trackviz$album_name),
@@ -83,7 +86,8 @@ df_trackviz %>%
     panel.background = element_rect(fill="ivory", color="ivory"),
     plot.background = element_rect(fill="ivory"),
     panel.grid.major = element_line(color="seashell3", 
-                                    linewidth=.25, linetype="dotted")
+                                    linewidth=.25, linetype="dotted"),
+    text = element_text(family="Book Antiqua")
   ) +
   facet_wrap(~factor(album_name, 
                      levels=unique(df_trackviz$album_name),), nrow=1, 
@@ -102,6 +106,7 @@ df_trackviz %>%
   annotations[[10]] +
   coord_cartesian(clip = 'off')
 ```
+# Duration (segment)
 
 ```{r}
 annotations <- mapply(FUN=annotation_custom2, grob=imgs, 
@@ -110,12 +115,12 @@ annotations <- mapply(FUN=annotation_custom2, grob=imgs,
                                     ymin=-1.25, ymax=-40, data=df_trackviz))
 
 df_trackviz %>% 
-  bind_rows(df_trackviz %>% mutate(tempo=0)) %>% 
-  ggplot(aes(y=tempo, x=order, color=factor(album_name))) +
+  bind_rows(df_trackviz %>% mutate(duration_min=0)) %>% 
+  ggplot(aes(y=duration_min, x=order, color=factor(album_name))) +
     #geom_bar(stat="identity",position="dodge", width=.55) +
-    geom_point(size=.9) +
-    geom_line() +
-    labs(y="Track tempo (bpm)") +
+    geom_point(size=.9, shape=18) +
+    geom_line(aes(group=id), lwd=0.8) +
+    labs(y="Track duration (min.)") +
     #scale_y_continuous(breaks=c(1,2,3,4,5,7,10,15,20,25)) +
     scale_x_discrete(expand = c(0,0)) +
     scale_color_manual(values=fills2) +
@@ -130,12 +135,13 @@ df_trackviz %>%
       strip.text = element_text(angle=0, size=0, color="ivory",
                                 margin=margin(1.19,0,0,0, unit="cm")),
       #strip.text = element_blank(),
-      panel.spacing = unit(.15, "lines"),
+      panel.spacing = unit(.2, "lines"),
       plot.margin = margin(0,.05,.15,0, unit="cm"),
       panel.background = element_rect(fill="ivory", color="ivory"),
       plot.background = element_rect(fill="ivory"),
       panel.grid.major = element_line(color="seashell3", 
-                                      linewidth=.25, linetype="dotted")
+                                      linewidth=.25, linetype="dotted"),
+      text = element_text(family="Book Antiqua")
     ) +
     facet_wrap(~factor(album_name, 
                        levels=unique(df_trackviz$album_name),), nrow=1, 
@@ -156,5 +162,187 @@ df_trackviz %>%
 ```
 
 
+# Tempo
+```{r}
+annotations <- mapply(FUN=annotation_custom2, grob=imgs, 
+                      subset=unique(df_trackviz$album_name),
+                      MoreArgs=list(xmin=-Inf, xmax=Inf, 
+                                    ymin=-1.25, ymax=-40, data=df_trackviz))
+
+df_trackviz %>% 
+  bind_rows(df_trackviz %>% mutate(tempo=0)) %>% 
+  ggplot(aes(y=tempo, x=order, color=factor(album_name))) +
+    #geom_bar(stat="identity",position="dodge", width=.55) +
+    geom_point(size=.9, shape=18) +
+    geom_line(aes(group=id), lwd=0.8) +
+    labs(y="Track tempo (bpm)") +
+    #scale_y_continuous(breaks=c(1,2,3,4,5,7,10,15,20,25)) +
+    scale_x_discrete(expand = c(0,0)) +
+    scale_color_manual(values=fills2) +
+    #scale_fill_manual(values=fills2) +
+    theme_void() +
+    theme(
+      axis.text.y = element_text(size=7),
+      axis.title.y = element_text(angle=90, size=9, 
+                                  margin=margin(0,5,0,0, unit="pt")),
+      legend.position="none",
+      strip.background = element_blank(),
+      strip.text = element_text(angle=0, size=0, color="ivory",
+                                margin=margin(1.19,0,0,0, unit="cm")),
+      #strip.text = element_blank(),
+      panel.spacing = unit(.2, "lines"),
+      plot.margin = margin(0,.05,.15,0, unit="cm"),
+      panel.background = element_rect(fill="ivory", color="ivory"),
+      plot.background = element_rect(fill="ivory"),
+      panel.grid.major = element_line(color="seashell3", 
+                                      linewidth=.25, linetype="dotted"),
+      text = element_text(family="Book Antiqua")
+    ) +
+    facet_wrap(~factor(album_name, 
+                       levels=unique(df_trackviz$album_name),), nrow=1, 
+               strip.position="bottom",
+               scales="free_x",
+               labeller=label_wrap_gen(15)) +
+    annotations[[1]] +
+    annotations[[2]] +
+    annotations[[3]] +
+    annotations[[4]] +
+    annotations[[5]] +
+    annotations[[6]] +
+    annotations[[7]] +
+    annotations[[8]] +
+    annotations[[9]] +
+    annotations[[10]] +
+    coord_cartesian(clip = 'off')
+```
+
+
+```{r}
+
+  
+ggplot(aes(y=duration_min,x=order, fill=factor(album_name)), data=df_trackviz) +
+    geom_bar(stat="identity",position="dodge", width=.55) +
+    labs(y="Track duration (min.)", title=font) +
+    scale_y_continuous(breaks=c(1,2,3,4,5,7,10,15,20,25)) +
+    scale_x_discrete(expand = c(0,0)) +
+    scale_color_manual(values=colors) +
+    scale_fill_manual(values=fills2) +
+    theme_void() +
+    theme(
+      axis.text.y = element_text(size=7),
+      axis.title.y = element_text(angle=90, size=9, 
+                                  margin=margin(0,5,0,0, unit="pt")),
+      legend.position="none",
+      strip.background = element_blank(),
+      strip.text = element_text(angle=0, size=0, color="ivory",
+                                margin=margin(1.19,0,0,0, unit="cm")),
+      #strip.text = element_blank(),
+      panel.spacing = unit(.05, "lines"),
+      plot.margin = margin(0,.05,.05,0, unit="cm"),
+      panel.background = element_rect(fill="ivory", color="ivory"),
+      plot.background = element_rect(fill="ivory"),
+      panel.grid.major = element_line(color="seashell3", 
+                                      linewidth=.25, linetype="dotted"),
+      text= element_text(family="TT Courier New")
+    ) +
+    facet_wrap(~factor(album_name, 
+                       levels=unique(df_trackviz$album_name),), nrow=1, 
+               strip.position="bottom",
+               scales="free_x",
+               labeller=label_wrap_gen(15))
+
+ggplot(aes(y=duration_min,x=order, fill=factor(album_name)), data=df_trackviz) +
+    geom_bar(stat="identity",position="dodge", width=.55) +
+    labs(y="Track duration (min.)", title=font) +
+    scale_y_continuous(breaks=c(1,2,3,4,5,7,10,15,20,25)) +
+    scale_x_discrete(expand = c(0,0)) +
+    scale_color_manual(values=colors) +
+    scale_fill_manual(values=fills2) +
+    theme_void() +
+    theme(
+      axis.text.y = element_text(size=7),
+      axis.title.y = element_text(angle=90, size=9, 
+                                  margin=margin(0,5,0,0, unit="pt")),
+      legend.position="none",
+      strip.background = element_blank(),
+      strip.text = element_text(angle=0, size=0, color="ivory",
+                                margin=margin(1.19,0,0,0, unit="cm")),
+      #strip.text = element_blank(),
+      panel.spacing = unit(.05, "lines"),
+      plot.margin = margin(0,.05,.05,0, unit="cm"),
+      panel.background = element_rect(fill="ivory", color="ivory"),
+      plot.background = element_rect(fill="ivory"),
+      panel.grid.major = element_line(color="seashell3", 
+                                      linewidth=.25, linetype="dotted"),
+      text= element_text(family="Bahnschrift")
+    ) +
+    facet_wrap(~factor(album_name, 
+                       levels=unique(df_trackviz$album_name),), nrow=1, 
+               strip.position="bottom",
+               scales="free_x",
+               labeller=label_wrap_gen(15))
+
+ggplot(aes(y=duration_min,x=order, fill=factor(album_name)), data=df_trackviz) +
+    geom_bar(stat="identity",position="dodge", width=.55) +
+    labs(y="Track duration (min.)", title=font) +
+    scale_y_continuous(breaks=c(1,2,3,4,5,7,10,15,20,25)) +
+    scale_x_discrete(expand = c(0,0)) +
+    scale_color_manual(values=colors) +
+    scale_fill_manual(values=fills2) +
+    theme_void() +
+    theme(
+      axis.text.y = element_text(size=7),
+      axis.title.y = element_text(angle=90, size=9, 
+                                  margin=margin(0,5,0,0, unit="pt")),
+      legend.position="none",
+      strip.background = element_blank(),
+      strip.text = element_text(angle=0, size=0, color="ivory",
+                                margin=margin(1.19,0,0,0, unit="cm")),
+      #strip.text = element_blank(),
+      panel.spacing = unit(.05, "lines"),
+      plot.margin = margin(0,.05,.05,0, unit="cm"),
+      panel.background = element_rect(fill="ivory", color="ivory"),
+      plot.background = element_rect(fill="ivory"),
+      panel.grid.major = element_line(color="seashell3", 
+                                      linewidth=.25, linetype="dotted"),
+      text= element_text(family="CMU Typewriter Text")
+    ) +
+    facet_wrap(~factor(album_name, 
+                       levels=unique(df_trackviz$album_name),), nrow=1, 
+               strip.position="bottom",
+               scales="free_x",
+               labeller=label_wrap_gen(15))
+
+ggplot(aes(y=duration_min,x=order, fill=factor(album_name)), data=df_trackviz) +
+    geom_bar(stat="identity",position="dodge", width=.55) +
+    labs(y="Track duration (min.)", title=font) +
+    scale_y_continuous(breaks=c(1,2,3,4,5,7,10,15,20,25)) +
+    scale_x_discrete(expand = c(0,0)) +
+    scale_color_manual(values=colors) +
+    scale_fill_manual(values=fills2) +
+    theme_void() +
+    theme(
+      axis.text.y = element_text(size=7),
+      axis.title.y = element_text(angle=90, size=9, 
+                                  margin=margin(0,5,0,0, unit="pt")),
+      legend.position="none",
+      strip.background = element_blank(),
+      strip.text = element_text(angle=0, size=0, color="ivory",
+                                margin=margin(1.19,0,0,0, unit="cm")),
+      #strip.text = element_blank(),
+      panel.spacing = unit(.05, "lines"),
+      plot.margin = margin(0,.05,.05,0, unit="cm"),
+      panel.background = element_rect(fill="ivory", color="ivory"),
+      plot.background = element_rect(fill="ivory"),
+      panel.grid.major = element_line(color="seashell3", 
+                                      linewidth=.25, linetype="dotted"),
+      text= element_text(family="Book Antiqua")
+    ) +
+    facet_wrap(~factor(album_name, 
+                       levels=unique(df_trackviz$album_name),), nrow=1, 
+               strip.position="bottom",
+               scales="free_x",
+               labeller=label_wrap_gen(15))
+```
 
 
