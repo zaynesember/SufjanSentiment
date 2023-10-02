@@ -1,0 +1,86 @@
+---
+title: "Lyrical Analysis"
+output: html_notebook
+---
+
+```{r setup}
+library(tidyverse)
+library(textclean)
+library(stringdist)
+
+lyric_cleaner <- function(lyrics){
+  
+  # Expand contractions
+  lyrics <- replace_contraction(lyrics)
+  
+  # Remove unicode and ASCII junk
+  lyrics <- iconv(lyrics, sub="", from="UTF-8", to="")
+  lyrics <- gsub("<U+.*?>", "", lyrics)
+  
+  # Convert to lower case
+  lyrics <- tolower(lyrics)
+  
+  # Remove handles
+  lyrics <- gsub("@", " ", lyrics)
+  
+  # Remove hashtags
+  lyrics <- gsub("#", " ", lyrics)
+  
+  # Remove hyperlinks
+  url_pattern <- "http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\\(s\\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+"
+  lyrics <- gsub(url_pattern, "", lyrics)
+  
+  # Replace ampersand with and
+  lyrics <- str_replace_all(lyrics, "&amp", "and")
+  
+  # Remove punctuation, digits, and emojis
+  lyrics <- gsub("[[:punct:]]", " ", lyrics)
+  lyrics <- gsub("[[:digit:]]", "", lyrics)
+  lyrics <- gsub(" ’", "", lyrics)
+  lyrics <- gsub("'s ", " ", lyrics)
+  lyrics <- gsub("s' ", "s ", lyrics)
+  lyrics <- gsub("’ ", " ", lyrics)
+  
+  # Remove newline characters
+  lyrics <- str_replace_all(lyrics, "[\r\n]" , " ")
+  
+  # Remove extra whitespace
+  lyrics <- gsub("  ", " ", lyrics)
+  lyrics <- gsub("  ", " ", lyrics)
+  
+  # Trim whitespace
+  lyrics <- str_trim(lyrics, side="both")
+  
+  return(lyrics)
+}
+```
+
+```{r}
+artist <- readRDS("Data/RDS Files/artist.rds")
+albums <- readRDS("Data/RDS Files/albums.rds")
+tracks <- readRDS("Data/RDS Files/tracks.rds")
+```
+
+Getting lyrics merged
+```{r}
+files <- list.files(path="Data/SongLyrics", pattern='*.txt',
+                    full.names=T, recursive = T)
+
+lyrics <- lapply(lapply(files, read_file), lyric_cleaner)
+
+df_lyrics <- data.frame(name = basename(files), 
+                        text = unlist(lyrics)) %>% 
+  left_join(data.frame(read.csv("Data/SongLyrics/FileIDCrosswalk.csv")) %>% 
+              select(name, id))
+
+tracks <- left_join(tracks, df_lyrics %>% select(-name))
+
+saveRDS(tracks, "Data/RDS Files/tracks.rds")
+```
+
+```{r}
+tracks %>% select(id, text) %>% 
+  unnest_tokens("text", "word", token="words", format="text")
+# FIX
+```
+

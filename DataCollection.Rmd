@@ -199,7 +199,7 @@ track_lyrics
 ```{r}
 saveRDS(albums, "Data/RDS Files/albums.rds")
 saveRDS(artist, "Data/RDS Files/artist.rds")
-saveRDS(tracks, "Data/RDS Files/tracks.rds")
+saveRDS(tracks %>% unique(), "Data/RDS Files/tracks.rds")
 ```
 
 
