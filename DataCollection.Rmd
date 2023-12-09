@@ -48,8 +48,8 @@ albums$name[albums$id=="7GpWcAtQ2dmn7Cpb4aZGfc"] <- "A Sun Came!"
 albums$release_date[albums$id=="7GpWcAtQ2dmn7Cpb4aZGfc"] <- "1999-06-13"
 
 # Get album names and ids of interest (non-instrumental/live albums)
-album_names <- albums$name[c(2,4,10,12,13,17,18,19,21,22)]
-album_ids <- albums$id[c(2,4,10,12,13,17,18,19,21,22)]
+album_names <- albums$name[1 + c(0,2,4,10,12,13,17,18,19,21,22)]
+album_ids <- albums$id[1 + c(0,2,4,10,12,13,17,18,19,21,22)]
 
 # Manually getting tracks because get_album_tracks() doesn't play nice with
 # for loop or lapply()
@@ -103,11 +103,16 @@ a10 <- get_album_tracks(id=album_ids[10], limit=50) %>%
   mutate(album_name=(albums %>% filter(id==album_ids[10]))$name,
          album_id=(albums %>% filter(id==album_ids[10]))$id)
 
+a11 <- get_album_tracks(id=album_ids[11], limit=50) %>% 
+  select(name, id, duration_ms, track_number) %>% 
+  mutate(album_name=(albums %>% filter(id==album_ids[11]))$name,
+         album_id=(albums %>% filter(id==album_ids[11]))$id)
+
 # Bind into one dataframe
-tracks <- rbind(a1, a2, a3, a4, a5, a6, a7, a8, a9, a10)
+tracks <- rbind(a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11)
 
 # Remove temp variables
-rm(a1, a2, a3, a4, a5, a6, a7, a8, a9, a10)
+rm(a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11)
 
 # Get other track info
 # FINISH
