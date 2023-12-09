@@ -188,12 +188,6 @@ albums <- albums %>%
   left_join(billboard)
 ```
 
-# Reading in lyric data
-```{r}
-track_lyrics 
-```
-
-
 
 # Save the data
 ```{r}

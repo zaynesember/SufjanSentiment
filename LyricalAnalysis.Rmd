@@ -5,6 +5,7 @@ output: html_notebook
 
 ```{r setup}
 library(tidyverse)
+library(tidytext)
 library(textclean)
 library(stringdist)
 
@@ -77,10 +78,16 @@ tracks <- left_join(tracks, df_lyrics %>% select(-name))
 
 saveRDS(tracks, "Data/RDS Files/tracks.rds")
 ```
-
+Using AFINN rather than bing or nrc bc of this: https://paulvanderlaken.com/2017/12/27/sentiment-analysis-lexicon-quality/
 ```{r}
 tracks %>% select(id, text) %>% 
-  unnest_tokens("text", "word", token="words", format="text")
-# FIX
+  filter(id=="4lyIHAc8sk6lm9iN5B8nmj") %>% 
+  unnest_tokens("word", "text", token="words", format="text") %>% 
+  inner_join(get_sentiments("nrc"))
 ```
+
+```{r}
+library(syuzhet)
+```
+
 
