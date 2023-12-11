@@ -1759,22 +1759,35 @@ display: none;
 <!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubGlicmFyeSh0aWR5dmVyc2UpXG5gYGAifQ== -->
 <pre class="r"><code>library(tidyverse)</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoi4pSA4pSAIEF0dGFjaGluZyBjb3JlIHRpZHl2ZXJzZSBwYWNrYWdlcyDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIAgdGlkeXZlcnNlIDIuMC4wIOKUgOKUgFxu4pyUIGRwbHlyICAgICAxLjEuMiAgICAg4pyUIHJlYWRyICAgICAyLjEuNFxu4pyUIGZvcmNhdHMgICAxLjAuMCAgICAg4pyUIHN0cmluZ3IgICAxLjUuMFxu4pyUIGdncGxvdDIgICAzLjQuMiAgICAg4pyUIHRpYmJsZSAgICAzLjIuMVxu4pyUIGx1YnJpZGF0ZSAxLjkuMiAgICAg4pyUIHRpZHlyICAgICAxLjMuMFxu4pyUIHB1cnJyICAgICAxLjAuMSAgICAg4pSA4pSAIENvbmZsaWN0cyDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIAgdGlkeXZlcnNlX2NvbmZsaWN0cygpIOKUgOKUgFxu4pyWIGRwbHlyOjpmaWx0ZXIoKSBtYXNrcyBzdGF0czo6ZmlsdGVyKClcbuKcliBkcGx5cjo6bGFnKCkgICAgbWFza3Mgc3RhdHM6OmxhZygpXG7ihLkgVXNlIHRoZSBcdTAwMWJdODs7aHR0cDovL2NvbmZsaWN0ZWQuci1saWIub3JnL1x1MDAwN2NvbmZsaWN0ZWQgcGFja2FnZVx1MDAxYl04OztcdTAwMDcgdG8gZm9yY2UgYWxsIGNvbmZsaWN0cyB0byBiZWNvbWUgZXJyb3JzXG4ifQ== -->
-<pre><code>── Attaching core tidyverse packages ──────────────────────────────────────────── tidyverse 2.0.0 ──
-✔ dplyr     1.1.2     ✔ readr     2.1.4
+<!-- rnb-output-begin eyJkYXRhIjoiV2FybmluZzogcGFja2FnZSDigJhnZ3Bsb3Qy4oCZIHdhcyBidWlsdCB1bmRlciBSIHZlcnNpb24gNC4yLjNXYXJuaW5nOiBwYWNrYWdlIOKAmHRpYmJsZeKAmSB3YXMgYnVpbHQgdW5kZXIgUiB2ZXJzaW9uIDQuMi4zV2FybmluZzogcGFja2FnZSDigJhwdXJycuKAmSB3YXMgYnVpbHQgdW5kZXIgUiB2ZXJzaW9uIDQuMi4zV2FybmluZzogcGFja2FnZSDigJhkcGx5cuKAmSB3YXMgYnVpbHQgdW5kZXIgUiB2ZXJzaW9uIDQuMi4zV2FybmluZzogcGFja2FnZSDigJhsdWJyaWRhdGXigJkgd2FzIGJ1aWx0IHVuZGVyIFIgdmVyc2lvbiA0LjIuM+KUgOKUgCBBdHRhY2hpbmcgY29yZSB0aWR5dmVyc2UgcGFja2FnZXMg4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSAIHRpZHl2ZXJzZSAyLjAuMCDilIDilIBcbuKclCBkcGx5ciAgICAgMS4xLjMgICAgIOKclCByZWFkciAgICAgMi4xLjRcbuKclCBmb3JjYXRzICAgMS4wLjAgICAgIOKclCBzdHJpbmdyICAgMS41LjBcbuKclCBnZ3Bsb3QyICAgMy40LjMgICAgIOKclCB0aWJibGUgICAgMy4yLjFcbuKclCBsdWJyaWRhdGUgMS45LjMgICAgIOKclCB0aWR5ciAgICAgMS4zLjBcbuKclCBwdXJyciAgICAgMS4wLjIgICAgIOKUgOKUgCBDb25mbGljdHMg4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSAIHRpZHl2ZXJzZV9jb25mbGljdHMoKSDilIDilIBcbuKcliBkcGx5cjo6ZmlsdGVyKCkgbWFza3Mgc3RhdHM6OmZpbHRlcigpXG7inJYgZHBseXI6OmxhZygpICAgIG1hc2tzIHN0YXRzOjpsYWcoKVxu4oS5IFVzZSB0aGUgXHUwMDFiXTg7O2h0dHA6Ly9jb25mbGljdGVkLnItbGliLm9yZy9cdTAwMDdjb25mbGljdGVkIHBhY2thZ2VcdTAwMWJdODs7XHUwMDA3IHRvIGZvcmNlIGFsbCBjb25mbGljdHMgdG8gYmVjb21lIGVycm9yc1xuIn0= -->
+<pre><code>Warning: package ‘ggplot2’ was built under R version 4.2.3Warning: package ‘tibble’ was built under R version 4.2.3Warning: package ‘purrr’ was built under R version 4.2.3Warning: package ‘dplyr’ was built under R version 4.2.3Warning: package ‘lubridate’ was built under R version 4.2.3── Attaching core tidyverse packages ────────────────────────────────── tidyverse 2.0.0 ──
+✔ dplyr     1.1.3     ✔ readr     2.1.4
 ✔ forcats   1.0.0     ✔ stringr   1.5.0
-✔ ggplot2   3.4.2     ✔ tibble    3.2.1
-✔ lubridate 1.9.2     ✔ tidyr     1.3.0
-✔ purrr     1.0.1     ── Conflicts ────────────────────────────────────────────────────────────── tidyverse_conflicts() ──
+✔ ggplot2   3.4.3     ✔ tibble    3.2.1
+✔ lubridate 1.9.3     ✔ tidyr     1.3.0
+✔ purrr     1.0.2     ── Conflicts ──────────────────────────────────────────────────── tidyverse_conflicts() ──
 ✖ dplyr::filter() masks stats::filter()
 ✖ dplyr::lag()    masks stats::lag()
 ℹ Use the ]8;;http://conflicted.r-lib.org/conflicted package]8;; to force all conflicts to become errors</code></pre>
 <!-- rnb-output-end -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubGlicmFyeShzcG90aWZ5cilcbmxpYnJhcnkoaHR0cHV2KVxubGlicmFyeShyZWFkeGwpXG5gYGAifQ== -->
-<pre class="r"><code>library(spotifyr)
-library(httpuv)
-library(readxl)</code></pre>
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubGlicmFyeShzcG90aWZ5cilcbmBgYCJ9 -->
+<pre class="r"><code>library(spotifyr)</code></pre>
 <!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiV2FybmluZzogcGFja2FnZSDigJhzcG90aWZ5cuKAmSB3YXMgYnVpbHQgdW5kZXIgUiB2ZXJzaW9uIDQuMi4zXG4ifQ== -->
+<pre><code>Warning: package ‘spotifyr’ was built under R version 4.2.3</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubGlicmFyeShodHRwdXYpXG5gYGAifQ== -->
+<pre class="r"><code>library(httpuv)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiV2FybmluZzogcGFja2FnZSDigJhodHRwdXbigJkgd2FzIGJ1aWx0IHVuZGVyIFIgdmVyc2lvbiA0LjIuM1xuIn0= -->
+<pre><code>Warning: package ‘httpuv’ was built under R version 4.2.3</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubGlicmFyeShyZWFkeGwpXG5gYGAifQ== -->
+<pre class="r"><code>library(readxl)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiV2FybmluZzogcGFja2FnZSDigJhyZWFkeGzigJkgd2FzIGJ1aWx0IHVuZGVyIFIgdmVyc2lvbiA0LjIuM1xuIn0= -->
+<pre><code>Warning: package ‘readxl’ was built under R version 4.2.3</code></pre>
+<!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <div id="authentication-with-the-spotify-api" class="section level1">
@@ -1807,8 +1820,90 @@ sufjan &lt;- &#39;4MXUO7sVCaFgFjoTI5ox5c&#39;</code></pre>
 <h1>Getting data from Spotify</h1>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZ2V0VHJhY2tBbmFseXNpcyA8LSBmdW5jdGlvbihpZHMpe1xuICBsZW5ndGggPSBsZW5ndGgoaWRzKVxuICBcbiAgcmV0VmFsIDwtIGRhdGEuZnJhbWUoaWQ9YyhOQSksXG4gICAgICAgICAgICBsb3VkbmVzcz1jKE5BKSxcbiAgICAgICAgICAgIHRlbXBvPWMoTkEpLFxuICAgICAgICAgICAgdGVtcG9fY29uZmlkZW5jZT1jKE5BKSxcbiAgICAgICAgICAgIHRpbWVfc2lnbmF0dXJlX3Nwb3RpZnk9YyhOQSksXG4gICAgICAgICAgICB0aW1lX3NpZ25hdHVyZV9jb25maWRlbmNlX3Nwb3RpZnk9YyhOQSksXG4gICAgICAgICAgICBrZXk9YyhOQSkpXG4gICAgICAgICAgICAjIHNwZWVjaGluZXNzPWMoTkEpLFxuICAgICAgICAgICAgIyBhY291c3RpY25lc3M9YyhOQSksXG4gICAgICAgICAgICAjIGluc3RydW1lbnRhbG5lc3M9YyhOQSksXG4gICAgICAgICAgICAjIGxpdmVuZXNzPWMoTkEpLFxuICAgICAgICAgICAgIyB2YWxlbmNlPWMoTkEpKVxuICBcbiAgZm9yKGlkIGluIGlkcyl7XG4gICAgZGF0YSA8LSBnZXRfdHJhY2tfYXVkaW9fYW5hbHlzaXMoaWQpXG4gICAgI2RhdGEyIDwtIGdldF90cmFja19hdWRpb19mZWF0dXJlcyhpZClcbiAgICBcbiAgICBwcmludChpZClcblxuICAgIHJldFZhbCA8LSByZXRWYWwgJT4lIFxuICAgICAgICAgICAgICAgIGJpbmRfcm93cyhcbiAgICAgICAgICAgICAgICAgIGRhdGEuZnJhbWUoaWQ9aWQsXG4gICAgICAgICAgICAgICAgICAgIGxvdWRuZXNzPWRhdGEkdHJhY2tbW1wibG91ZG5lc3NcIl1dLFxuICAgICAgICAgICAgICAgICAgICB0ZW1wbz1kYXRhJHRyYWNrW1tcInRlbXBvXCJdXSxcbiAgICAgICAgICAgICAgICAgICAgdGVtcG9fY29uZmlkZW5jZT1kYXRhJHRyYWNrW1tcInRlbXBvX2NvbmZpZGVuY2VcIl1dLFxuICAgICAgICAgICAgICAgICAgICB0aW1lX3NpZ25hdHVyZV9zcG90aWZ5PWRhdGEkdHJhY2tbW1widGltZV9zaWduYXR1cmVcIl1dLFxuICAgICAgICAgICAgICAgICAgICB0aW1lX3NpZ25hdHVyZV9jb25maWRlbmNlX3Nwb3RpZnk9ZGF0YSR0cmFja1tbXCJ0aW1lX3NpZ25hdHVyZV9jb25maWRlbmNlXCJdXSxcbiAgICAgICAgICAgICAgICAgICAga2V5PWRhdGEkdHJhY2tbW1wia2V5XCJdXSkpXG4gICAgICAgICAgICAgICAgICAjIHNwZWVjaGluZXNzPWRhdGEyJHNwZWVjaGluZXNzLFxuICAgICAgICAgICAgICAgICAgIyBhY291c3RpY25lc3M9ZGF0YTIkYWNvdXN0aWNuZXNzLFxuICAgICAgICAgICAgICAgICAgIyBpbnN0cnVtZW50YWxuZXNzPWRhdGEyJGluc3RydW1lbnRhbG5lc3MsXG4gICAgICAgICAgICAgICAgICAjIGxpdmVuZXNzPWRhdGEyJGxpdmVuZXNzLFxuICAgICAgICAgICAgICAgICAgIyB2YWxlbmNlPWRhdGEyJHZhbGVuY2UpKVxuICB9XG4gIHJldHVybihyZXRWYWxbMjpucm93KHJldFZhbCksXSlcbn1cblxudGVtcCA8LSBnZXRUcmFja0FuYWx5c2lzKHRyYWNrcyRpZClcblxuYGBgIn0= -->
-<pre class="r"><code>getTrackAnalysis &lt;- function(ids){
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyBHZXQgYWxsIGFydGlzdCBtZXRhZGF0YVxuYXJ0aXN0IDwtIGdldF9hcnRpc3Qoc3VmamFuKVxuXG4jIEdldCBhbGwgYWxidW0gbWV0YWRhdGEgYW5kIHNlbGVjdCB3aGF0IHdlIHdhbnRcbmFsYnVtcyA8LSBnZXRfYXJ0aXN0X2FsYnVtcyhzdWZqYW4sIGxpbWl0PTUwKVxuYWxidW1zIDwtIGFsYnVtcyAlPiUgXG4gIHNlbGVjdChpZCwgbmFtZSwgcmVsZWFzZV9kYXRlLCB0b3RhbF90cmFja3MpXG5cbiMgU3BvdGlmeSBoYXMgYSByZWlzc3VlIG9mIEEgU3VuIENhbWUhIHNvIHdlIG5lZWQgdG8gY29ycmVjdCB0aGUgbmFtZVxuIyBhbmQgcmVsZWFzZSBkYXRlIHRvIHJlZmxlY3QgdGhlIG9yaWdpbmFsIHJlbGVhc2UgKHRyYWNrcyBhcmUgdGhlIHNhbWUpXG5hbGJ1bXMkbmFtZVthbGJ1bXMkaWQ9PVwiN0dwV2NBdFEyZG1uN0NwYjRhWkdmY1wiXSA8LSBcIkEgU3VuIENhbWUhXCJcbmFsYnVtcyRyZWxlYXNlX2RhdGVbYWxidW1zJGlkPT1cIjdHcFdjQXRRMmRtbjdDcGI0YVpHZmNcIl0gPC0gXCIxOTk5LTA2LTEzXCJcblxuIyBHZXQgYWxidW0gbmFtZXMgYW5kIGlkcyBvZiBpbnRlcmVzdCAobm9uLWluc3RydW1lbnRhbC9saXZlIGFsYnVtcylcbmFsYnVtX25hbWVzIDwtIGFsYnVtcyRuYW1lWzEgKyBjKDAsMiw0LDEwLDEyLDEzLDE3LDE4LDE5LDIxLDIyKV1cbmFsYnVtX2lkcyA8LSBhbGJ1bXMkaWRbMSArIGMoMCwyLDQsMTAsMTIsMTMsMTcsMTgsMTksMjEsMjIpXVxuXG4jIE1hbnVhbGx5IGdldHRpbmcgdHJhY2tzIGJlY2F1c2UgZ2V0X2FsYnVtX3RyYWNrcygpIGRvZXNuJ3QgcGxheSBuaWNlIHdpdGhcbiMgZm9yIGxvb3Agb3IgbGFwcGx5KClcbmExIDwtIGdldF9hbGJ1bV90cmFja3MoaWQ9YWxidW1faWRzWzFdLCBsaW1pdD01MCkgJT4lIFxuICBzZWxlY3QobmFtZSwgaWQsIGR1cmF0aW9uX21zLCB0cmFja19udW1iZXIpICU+JSBcbiAgbXV0YXRlKGFsYnVtX25hbWU9KGFsYnVtcyAlPiUgZmlsdGVyKGlkPT1hbGJ1bV9pZHNbMV0pKSRuYW1lLFxuICAgICAgICAgYWxidW1faWQ9KGFsYnVtcyAlPiUgZmlsdGVyKGlkPT1hbGJ1bV9pZHNbMV0pKSRpZClcblxuYTIgPC0gZ2V0X2FsYnVtX3RyYWNrcyhpZD1hbGJ1bV9pZHNbMl0sIGxpbWl0PTUwKSAlPiUgXG4gIHNlbGVjdChuYW1lLCBpZCwgZHVyYXRpb25fbXMsIHRyYWNrX251bWJlcikgJT4lIFxuICBtdXRhdGUoYWxidW1fbmFtZT0oYWxidW1zICU+JSBmaWx0ZXIoaWQ9PWFsYnVtX2lkc1syXSkpJG5hbWUsXG4gICAgICAgICBhbGJ1bV9pZD0oYWxidW1zICU+JSBmaWx0ZXIoaWQ9PWFsYnVtX2lkc1syXSkpJGlkKVxuXG5hMyA8LSBnZXRfYWxidW1fdHJhY2tzKGlkPWFsYnVtX2lkc1szXSwgbGltaXQ9NTApICU+JSBcbiAgc2VsZWN0KG5hbWUsIGlkLCBkdXJhdGlvbl9tcywgdHJhY2tfbnVtYmVyKSAlPiUgXG4gIG11dGF0ZShhbGJ1bV9uYW1lPShhbGJ1bXMgJT4lIGZpbHRlcihpZD09YWxidW1faWRzWzNdKSkkbmFtZSxcbiAgICAgICAgIGFsYnVtX2lkPShhbGJ1bXMgJT4lIGZpbHRlcihpZD09YWxidW1faWRzWzNdKSkkaWQpXG5cbmE0IDwtIGdldF9hbGJ1bV90cmFja3MoaWQ9YWxidW1faWRzWzRdLCBsaW1pdD01MCkgJT4lIFxuICBzZWxlY3QobmFtZSwgaWQsIGR1cmF0aW9uX21zLCB0cmFja19udW1iZXIpICU+JSBcbiAgbXV0YXRlKGFsYnVtX25hbWU9KGFsYnVtcyAlPiUgZmlsdGVyKGlkPT1hbGJ1bV9pZHNbNF0pKSRuYW1lLFxuICAgICAgICAgYWxidW1faWQ9KGFsYnVtcyAlPiUgZmlsdGVyKGlkPT1hbGJ1bV9pZHNbNF0pKSRpZClcblxuYTUgPC0gZ2V0X2FsYnVtX3RyYWNrcyhpZD1hbGJ1bV9pZHNbNV0sIGxpbWl0PTUwKSAlPiUgXG4gIHNlbGVjdChuYW1lLCBpZCwgZHVyYXRpb25fbXMsIHRyYWNrX251bWJlcikgJT4lIFxuICBtdXRhdGUoYWxidW1fbmFtZT0oYWxidW1zICU+JSBmaWx0ZXIoaWQ9PWFsYnVtX2lkc1s1XSkpJG5hbWUsXG4gICAgICAgICBhbGJ1bV9pZD0oYWxidW1zICU+JSBmaWx0ZXIoaWQ9PWFsYnVtX2lkc1s1XSkpJGlkKVxuXG5hNiA8LSBnZXRfYWxidW1fdHJhY2tzKGlkPWFsYnVtX2lkc1s2XSwgbGltaXQ9NTApICU+JSBcbiAgc2VsZWN0KG5hbWUsIGlkLCBkdXJhdGlvbl9tcywgdHJhY2tfbnVtYmVyKSAlPiUgXG4gIG11dGF0ZShhbGJ1bV9uYW1lPShhbGJ1bXMgJT4lIGZpbHRlcihpZD09YWxidW1faWRzWzZdKSkkbmFtZSxcbiAgICAgICAgIGFsYnVtX2lkPShhbGJ1bXMgJT4lIGZpbHRlcihpZD09YWxidW1faWRzWzZdKSkkaWQpXG5cbmE3IDwtIGdldF9hbGJ1bV90cmFja3MoaWQ9YWxidW1faWRzWzddLCBsaW1pdD01MCkgJT4lIFxuICBzZWxlY3QobmFtZSwgaWQsIGR1cmF0aW9uX21zLCB0cmFja19udW1iZXIpICU+JSBcbiAgbXV0YXRlKGFsYnVtX25hbWU9KGFsYnVtcyAlPiUgZmlsdGVyKGlkPT1hbGJ1bV9pZHNbN10pKSRuYW1lLFxuICAgICAgICAgYWxidW1faWQ9KGFsYnVtcyAlPiUgZmlsdGVyKGlkPT1hbGJ1bV9pZHNbN10pKSRpZClcblxuYTggPC0gZ2V0X2FsYnVtX3RyYWNrcyhpZD1hbGJ1bV9pZHNbOF0sIGxpbWl0PTUwKSAlPiUgXG4gIHNlbGVjdChuYW1lLCBpZCwgZHVyYXRpb25fbXMsIHRyYWNrX251bWJlcikgJT4lIFxuICBtdXRhdGUoYWxidW1fbmFtZT0oYWxidW1zICU+JSBmaWx0ZXIoaWQ9PWFsYnVtX2lkc1s4XSkpJG5hbWUsXG4gICAgICAgICBhbGJ1bV9pZD0oYWxidW1zICU+JSBmaWx0ZXIoaWQ9PWFsYnVtX2lkc1s4XSkpJGlkKVxuXG5hOSA8LSBnZXRfYWxidW1fdHJhY2tzKGlkPWFsYnVtX2lkc1s5XSwgbGltaXQ9NTApICU+JSBcbiAgc2VsZWN0KG5hbWUsIGlkLCBkdXJhdGlvbl9tcywgdHJhY2tfbnVtYmVyKSAlPiUgXG4gIG11dGF0ZShhbGJ1bV9uYW1lPShhbGJ1bXMgJT4lIGZpbHRlcihpZD09YWxidW1faWRzWzldKSkkbmFtZSxcbiAgICAgICAgIGFsYnVtX2lkPShhbGJ1bXMgJT4lIGZpbHRlcihpZD09YWxidW1faWRzWzldKSkkaWQpXG5cbmExMCA8LSBnZXRfYWxidW1fdHJhY2tzKGlkPWFsYnVtX2lkc1sxMF0sIGxpbWl0PTUwKSAlPiUgXG4gIHNlbGVjdChuYW1lLCBpZCwgZHVyYXRpb25fbXMsIHRyYWNrX251bWJlcikgJT4lIFxuICBtdXRhdGUoYWxidW1fbmFtZT0oYWxidW1zICU+JSBmaWx0ZXIoaWQ9PWFsYnVtX2lkc1sxMF0pKSRuYW1lLFxuICAgICAgICAgYWxidW1faWQ9KGFsYnVtcyAlPiUgZmlsdGVyKGlkPT1hbGJ1bV9pZHNbMTBdKSkkaWQpXG5cbmExMSA8LSBnZXRfYWxidW1fdHJhY2tzKGlkPWFsYnVtX2lkc1sxMV0sIGxpbWl0PTUwKSAlPiUgXG4gIHNlbGVjdChuYW1lLCBpZCwgZHVyYXRpb25fbXMsIHRyYWNrX251bWJlcikgJT4lIFxuICBtdXRhdGUoYWxidW1fbmFtZT0oYWxidW1zICU+JSBmaWx0ZXIoaWQ9PWFsYnVtX2lkc1sxMV0pKSRuYW1lLFxuICAgICAgICAgYWxidW1faWQ9KGFsYnVtcyAlPiUgZmlsdGVyKGlkPT1hbGJ1bV9pZHNbMTFdKSkkaWQpXG5cbiMgQmluZCBpbnRvIG9uZSBkYXRhZnJhbWVcbnRyYWNrcyA8LSByYmluZChhMSwgYTIsIGEzLCBhNCwgYTUsIGE2LCBhNywgYTgsIGE5LCBhMTAsIGExMSlcblxuIyBSZW1vdmUgdGVtcCB2YXJpYWJsZXNcbnJtKGExLCBhMiwgYTMsIGE0LCBhNSwgYTYsIGE3LCBhOCwgYTksIGExMCwgYTExKVxuXG4jIEdldCBvdGhlciB0cmFjayBpbmZvXG4jIEZJTklTSFxuZ2V0VHJhY2tBbmFseXNpcyA8LSBmdW5jdGlvbihpZHMpe1xuICBsZW5ndGggPSBsZW5ndGgoaWRzKVxuICBcbiAgcmV0VmFsIDwtIGRhdGEuZnJhbWUoaWQ9YyhOQSksXG4gICAgICAgICAgICBsb3VkbmVzcz1jKE5BKSxcbiAgICAgICAgICAgIHRlbXBvPWMoTkEpLFxuICAgICAgICAgICAgdGVtcG9fY29uZmlkZW5jZT1jKE5BKSxcbiAgICAgICAgICAgIHRpbWVfc2lnbmF0dXJlX3Nwb3RpZnk9YyhOQSksXG4gICAgICAgICAgICB0aW1lX3NpZ25hdHVyZV9jb25maWRlbmNlX3Nwb3RpZnk9YyhOQSksXG4gICAgICAgICAgICBrZXk9YyhOQSkpXG4gICAgICAgICAgICAjIHNwZWVjaGluZXNzPWMoTkEpLFxuICAgICAgICAgICAgIyBhY291c3RpY25lc3M9YyhOQSksXG4gICAgICAgICAgICAjIGluc3RydW1lbnRhbG5lc3M9YyhOQSksXG4gICAgICAgICAgICAjIGxpdmVuZXNzPWMoTkEpLFxuICAgICAgICAgICAgIyB2YWxlbmNlPWMoTkEpKVxuICBcbiAgZm9yKGlkIGluIGlkcyl7XG4gICAgZGF0YSA8LSBnZXRfdHJhY2tfYXVkaW9fYW5hbHlzaXMoaWQpXG4gICAgI2RhdGEyIDwtIGdldF90cmFja19hdWRpb19mZWF0dXJlcyhpZClcbiAgICBcbiAgICBwcmludChpZClcblxuICAgIHJldFZhbCA8LSByZXRWYWwgJT4lIFxuICAgICAgICAgICAgICAgIGJpbmRfcm93cyhcbiAgICAgICAgICAgICAgICAgIGRhdGEuZnJhbWUoaWQ9aWQsXG4gICAgICAgICAgICAgICAgICAgIGxvdWRuZXNzPWRhdGEkdHJhY2tbW1wibG91ZG5lc3NcIl1dLFxuICAgICAgICAgICAgICAgICAgICB0ZW1wbz1kYXRhJHRyYWNrW1tcInRlbXBvXCJdXSxcbiAgICAgICAgICAgICAgICAgICAgdGVtcG9fY29uZmlkZW5jZT1kYXRhJHRyYWNrW1tcInRlbXBvX2NvbmZpZGVuY2VcIl1dLFxuICAgICAgICAgICAgICAgICAgICB0aW1lX3NpZ25hdHVyZV9zcG90aWZ5PWRhdGEkdHJhY2tbW1widGltZV9zaWduYXR1cmVcIl1dLFxuICAgICAgICAgICAgICAgICAgICB0aW1lX3NpZ25hdHVyZV9jb25maWRlbmNlX3Nwb3RpZnk9ZGF0YSR0cmFja1tbXCJ0aW1lX3NpZ25hdHVyZV9jb25maWRlbmNlXCJdXSxcbiAgICAgICAgICAgICAgICAgICAga2V5PWRhdGEkdHJhY2tbW1wia2V5XCJdXSkpXG4gICAgICAgICAgICAgICAgICAjIHNwZWVjaGluZXNzPWRhdGEyJHNwZWVjaGluZXNzLFxuICAgICAgICAgICAgICAgICAgIyBhY291c3RpY25lc3M9ZGF0YTIkYWNvdXN0aWNuZXNzLFxuICAgICAgICAgICAgICAgICAgIyBpbnN0cnVtZW50YWxuZXNzPWRhdGEyJGluc3RydW1lbnRhbG5lc3MsXG4gICAgICAgICAgICAgICAgICAjIGxpdmVuZXNzPWRhdGEyJGxpdmVuZXNzLFxuICAgICAgICAgICAgICAgICAgIyB2YWxlbmNlPWRhdGEyJHZhbGVuY2UpKVxuICB9XG4gIHJldHVybihyZXRWYWxbMjpucm93KHJldFZhbCksXSlcbn1cblxudGVtcCA8LSBnZXRUcmFja0FuYWx5c2lzKHRyYWNrcyRpZClcbmBgYCJ9 -->
+<pre class="r"><code># Get all artist metadata
+artist &lt;- get_artist(sufjan)
+
+# Get all album metadata and select what we want
+albums &lt;- get_artist_albums(sufjan, limit=50)
+albums &lt;- albums %&gt;% 
+  select(id, name, release_date, total_tracks)
+
+# Spotify has a reissue of A Sun Came! so we need to correct the name
+# and release date to reflect the original release (tracks are the same)
+albums$name[albums$id==&quot;7GpWcAtQ2dmn7Cpb4aZGfc&quot;] &lt;- &quot;A Sun Came!&quot;
+albums$release_date[albums$id==&quot;7GpWcAtQ2dmn7Cpb4aZGfc&quot;] &lt;- &quot;1999-06-13&quot;
+
+# Get album names and ids of interest (non-instrumental/live albums)
+album_names &lt;- albums$name[1 + c(0,2,4,10,12,13,17,18,19,21,22)]
+album_ids &lt;- albums$id[1 + c(0,2,4,10,12,13,17,18,19,21,22)]
+
+# Manually getting tracks because get_album_tracks() doesn&#39;t play nice with
+# for loop or lapply()
+a1 &lt;- get_album_tracks(id=album_ids[1], limit=50) %&gt;% 
+  select(name, id, duration_ms, track_number) %&gt;% 
+  mutate(album_name=(albums %&gt;% filter(id==album_ids[1]))$name,
+         album_id=(albums %&gt;% filter(id==album_ids[1]))$id)
+
+a2 &lt;- get_album_tracks(id=album_ids[2], limit=50) %&gt;% 
+  select(name, id, duration_ms, track_number) %&gt;% 
+  mutate(album_name=(albums %&gt;% filter(id==album_ids[2]))$name,
+         album_id=(albums %&gt;% filter(id==album_ids[2]))$id)
+
+a3 &lt;- get_album_tracks(id=album_ids[3], limit=50) %&gt;% 
+  select(name, id, duration_ms, track_number) %&gt;% 
+  mutate(album_name=(albums %&gt;% filter(id==album_ids[3]))$name,
+         album_id=(albums %&gt;% filter(id==album_ids[3]))$id)
+
+a4 &lt;- get_album_tracks(id=album_ids[4], limit=50) %&gt;% 
+  select(name, id, duration_ms, track_number) %&gt;% 
+  mutate(album_name=(albums %&gt;% filter(id==album_ids[4]))$name,
+         album_id=(albums %&gt;% filter(id==album_ids[4]))$id)
+
+a5 &lt;- get_album_tracks(id=album_ids[5], limit=50) %&gt;% 
+  select(name, id, duration_ms, track_number) %&gt;% 
+  mutate(album_name=(albums %&gt;% filter(id==album_ids[5]))$name,
+         album_id=(albums %&gt;% filter(id==album_ids[5]))$id)
+
+a6 &lt;- get_album_tracks(id=album_ids[6], limit=50) %&gt;% 
+  select(name, id, duration_ms, track_number) %&gt;% 
+  mutate(album_name=(albums %&gt;% filter(id==album_ids[6]))$name,
+         album_id=(albums %&gt;% filter(id==album_ids[6]))$id)
+
+a7 &lt;- get_album_tracks(id=album_ids[7], limit=50) %&gt;% 
+  select(name, id, duration_ms, track_number) %&gt;% 
+  mutate(album_name=(albums %&gt;% filter(id==album_ids[7]))$name,
+         album_id=(albums %&gt;% filter(id==album_ids[7]))$id)
+
+a8 &lt;- get_album_tracks(id=album_ids[8], limit=50) %&gt;% 
+  select(name, id, duration_ms, track_number) %&gt;% 
+  mutate(album_name=(albums %&gt;% filter(id==album_ids[8]))$name,
+         album_id=(albums %&gt;% filter(id==album_ids[8]))$id)
+
+a9 &lt;- get_album_tracks(id=album_ids[9], limit=50) %&gt;% 
+  select(name, id, duration_ms, track_number) %&gt;% 
+  mutate(album_name=(albums %&gt;% filter(id==album_ids[9]))$name,
+         album_id=(albums %&gt;% filter(id==album_ids[9]))$id)
+
+a10 &lt;- get_album_tracks(id=album_ids[10], limit=50) %&gt;% 
+  select(name, id, duration_ms, track_number) %&gt;% 
+  mutate(album_name=(albums %&gt;% filter(id==album_ids[10]))$name,
+         album_id=(albums %&gt;% filter(id==album_ids[10]))$id)
+
+a11 &lt;- get_album_tracks(id=album_ids[11], limit=50) %&gt;% 
+  select(name, id, duration_ms, track_number) %&gt;% 
+  mutate(album_name=(albums %&gt;% filter(id==album_ids[11]))$name,
+         album_id=(albums %&gt;% filter(id==album_ids[11]))$id)
+
+# Bind into one dataframe
+tracks &lt;- rbind(a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11)
+
+# Remove temp variables
+rm(a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11)
+
+# Get other track info
+# FINISH
+getTrackAnalysis &lt;- function(ids){
   length = length(ids)
   
   retVal &lt;- data.frame(id=c(NA),
@@ -1848,8 +1943,7 @@ sufjan &lt;- &#39;4MXUO7sVCaFgFjoTI5ox5c&#39;</code></pre>
   return(retVal[2:nrow(retVal),])
 }
 
-temp &lt;- getTrackAnalysis(tracks$id)
-</code></pre>
+temp &lt;- getTrackAnalysis(tracks$id)</code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-output-begin eyJkYXRhIjoiWzFdIFwiMkdFczlENTZGUkhxVUFFd3ZsdkJwd1wiXG5bMV0gXCIwVkVqTTRMWXVPeFBDdHJ0S3V3YnVxXCJcblsxXSBcIjdJQXg5T3ZUb0hrVDhDNFpsWDlod2VcIlxuWzFdIFwiN2ZhaTRRMUZoelBQTUxub29ZN1JNOFwiXG5bMV0gXCI0WXNsMHliT2FFaWlwSDBTYjNBMHF5XCJcblsxXSBcIjE4UjhhM2pxM2JiZGE1WFg4Zm9sMnJcIlxuWzFdIFwiMHBrbTd4QVRzdFFVcUhvaXRtRTNydVwiXG5bMV0gXCIxR21Nckx6cnpmbnhkdlY0T2lNVTlzXCJcblsxXSBcIjZ0OGFSVFhYSWN4OUpWUkQ4SVJaS1JcIlxuWzFdIFwiNXg1YXNFNGhleTFZMDMzVmwyVVo5NFwiXG5bMV0gXCIyZ0V1RW52SGR5WmhSb1hRaWFvWTFZXCJcblsxXSBcIjBXMmE3R2E5YXVMUEREUFFwMTFpRE9cIlxuWzFdIFwiNnMwRjA5TjdqcDR3U3FOOHZWZ01RUlwiXG5bMV0gXCI1djM4TnhFbGxWRkdXNDdqdFNMMXN6XCJcblsxXSBcIjRkR2pCYWlMcnJHWUdKZzhMNjJuMzVcIlxuWzFdIFwiMjFSV1B3c0tFbE5US3g3VmYwM0RmclwiXG5bMV0gXCIyZVZXelpnWVg4N1FRN2NTOU1LblpJXCJcblsxXSBcIjQzZmxEdXlzendxcGdzdWtrcU1WZWFcIlxuWzFdIFwiMmJSU1RQWjczWGJTeTFZUlhFWlJsMFwiXG5bMV0gXCI2b05tU0c4SmJNYTRqRzVVUUM1RnIyXCJcblsxXSBcIjZLcnI2SmxQTEoyMjBMVDNZSThldVRcIlxuWzFdIFwiMGZ3U3lEejAxRUYxQWZwWWFXUE15MFwiXG5bMV0gXCIzVDdRSHpyQTdPeDB5UFhDcTBPWElhXCJcblsxXSBcIjdpWFNSSWs2c1ZQRkVJNXZGc3VRZzBcIlxuWzFdIFwiMEhIUHhZQ1FhbXp1VTBUQml3aDBxRlwiXG5bMV0gXCI3a1Bzc3R2d3NWeFlLcmJ5NkFMd25UXCJcblsxXSBcIjNROEIxbm5VQmxKejBWVGFqeWsxSVNcIlxuWzFdIFwiNGNCZ2xtblZQbFZGTm5zWlNmbW5rdFwiXG5bMV0gXCI0bzVZQkFYaVkwRzFiVWxvaWZYUThIXCJcblsxXSBcIjM5QzF4YzRTeFNWQkxDM3hTU1lhWXVcIlxuWzFdIFwiNkZHd2Q4SXRLSEFyOFZ5c3JxODRxcVwiXG5bMV0gXCI1cW9PcldWUnZhb21POG5HT0lnZzZzXCJcblsxXSBcIjQ0R1JVY3gyNnNQazdYRlh1dlBEeW5cIlxuWzFdIFwiMXhZc0Nob1kwYTJSMmp4aGs2OTRFWVwiXG5bMV0gXCIwN1RzNEczWlprcElaaDBEZTlVVkp0XCJcblsxXSBcIjNjcEQ5d0Y0Z1B2NlZQUVN6OFpVY3RcIlxuWzFdIFwiN3ZLQUZvNU9OUk1qWFhBTXczdFJFWFwiXG5bMV0gXCIxWVBrTkFhdkN1QjFvTFVRRUpFaDhEXCJcblsxXSBcIjM0UEdhU2tEYWljQzNBNEtmY2o2WWtcIlxuWzFdIFwiNzN1SnliR0Fod0dSRDlNWllyT21UWVwiXG5bMV0gXCIzQXl1aWdGV2J1aXJXSHZpZGJNejhPXCJcblsxXSBcIjRseUlIQWM4c2s2bG05aU41QjhubWpcIlxuWzFdIFwiN3RMNTllU1IzeU0xaVNyNFBqbWd5WFwiXG5bMV0gXCI3bzNadXAwblRSRkFGQVBLQnBTNzJHXCJcblsxXSBcIjVRbnJncXkxcEFtOUd5TlFPZ3lWRnpcIlxuWzFdIFwiMTdVVnhMME1ZRW1LelhwcGZVTDVpblwiXG5bMV0gXCI3RTlUOUVzc214Z3U5OGthT2pUVk5NXCJcblsxXSBcIjRDQjU3RkJoZmhxMnExR0hRTjdiam1cIlxuWzFdIFwiNTVnYTg3bzJ5c3FCWTVwYnpUdDJlb1wiXG5bMV0gXCI0ckRwUDV1SGllU1RjYmxOazd3UTJ5XCJcblsxXSBcIjUwUVZMUzMwRUxxZUpPcGh4NHBXdjdcIlxuWzFdIFwiMllMU3JlUUFaczJFNFZBS1B0M3ZTY1wiXG5bMV0gXCIzYktYV2NDN0gyb0JHVnE3M2dLNXlYXCJcblsxXSBcIjVPSmV5WndlU01TWjFrZU50aDJEM0tcIlxuWzFdIFwiM2gzWERKaFg4RFNlcHV6dHA2M05OOVwiXG5bMV0gXCI2R2ZKSVhWNlBZWk1SV2FrZ0lsZ0pMXCJcblsxXSBcIjRDVG10amV0YUM3QmV5ZVFuSWlVOTdcIlxuWzFdIFwiNVpidXMxbGxEWWlQaEpaekZlRkd3V1wiXG5bMV0gXCI0WnRzOWVyUmV4QXhJTG41WGpTd1VOXCJcblsxXSBcIjVXU2VTM2VDRDBkTXJNUFE5aGsxOU9cIlxuWzFdIFwiNUVQMnBHbzk3c2lMek1qbEpuS21OS1wiXG5bMV0gXCI2OEpCN2s2aUpFeWR5b2M3dDhMQ3FKXCJcblsxXSBcIjIyUkJRNWpxR3ljR1lSU3NIMXUwcXhcIlxuWzFdIFwiMDVTVTdZbDE3MXJZb0k4ZWVSZFdPQ1wiXG5bMV0gXCIySllKd2hzRW9Xc1lYWXIycnB3enh4XCJcblsxXSBcIjNHV1pYM1l0bGRYQ2RTUXFyekdnVjVcIlxuWzFdIFwiNVlwclJUZEZjdGYxbE5tZERjTU5BSlwiXG5bMV0gXCI2QkJZUEsybzBIWkMzU2JLTXh4cHVqXCJcblsxXSBcIjM2S0tRcWNEUVRrNE9wMHVzeXFyTVNcIlxuWzFdIFwiNXFRWFpxNUNJWVhMRnY1RTY4VVZST1wiXG5bMV0gXCIyTUUzRzFLdWxXbWtYdkw4SW5aNkVhXCJcblsxXSBcIjJvajQ1UUcybzR5WEhwWmkzUVJ3MVBcIlxuWzFdIFwiNmY5WGM2enBCU2ZjMzhCWFRZd1gwaFwiXG5bMV0gXCI2dGNsa0RmT2dldG1JM25FNW5ZMFh3XCJcblsxXSBcIjJ5OVM5Q2l6ODR2c2x1ZUNoMzRjcTBcIlxuWzFdIFwiN3JtZVhEZzAxOFZIdHFxU3FTamNGc1wiXG5bMV0gXCIxY2lBakhDT2t2NWxGR1E0VmRaUGtuXCJcblsxXSBcIjZab3M1ZE5jYXUwUzRscExlYU5nR1pcIlxuWzFdIFwiNURPNUVsWTBPVWZ4YVY5QTRFQ0FONFwiXG5bMV0gXCI0M29TV29wOFc0WTFpTWNFMnpVd1BaXCJcblsxXSBcIjRtOExnRjBLcEs1aThBSmtnQU1zcjJcIlxuWzFdIFwiNDhWV1lWemNQT0hwbWRObE5Nc0VoMFwiXG5bMV0gXCI1WTdyUFJBVllDVmlUMlJwS2RTbVFZXCJcblsxXSBcIjZNTEdMZWlZd0lBQWVNMXc0dUk0OW9cIlxuWzFdIFwiMDBDVjlQazlmSjBJSmVsUE5HN01mWVwiXG5bMV0gXCI2RUYxektkQ093Z3VWQURYOHhobHM2XCJcblsxXSBcIjBJWW9sUVNrYm9RT0g3amZTN3NxWDlcIlxuWzFdIFwiNW5lV1BVeWVySGY1WTlXbHgwR2xHbFwiXG5bMV0gXCIzTmJLNGpPNEFjR29PWXFScmhwWjRpXCJcblsxXSBcIjNCV2NFQWh5aG96aVNBckE1SXl0SG9cIlxuWzFdIFwiMkJqUmhaMklKbXNPMUdScXVObGRzUFwiXG5bMV0gXCI0THlPOTlCaEVNQXlWR2U0SjVnZW5FXCJcblsxXSBcIjN2YnhRcFpkSVhKM29BTEJkOE95UTZcIlxuWzFdIFwiMlIzZzlrMTRPQWNVelpZd285MFR4NlwiXG5bMV0gXCI3aVlhUGozcEFRM1VKclNtWVpDaFlZXCJcblsxXSBcIjZoZnhHU3RaNEwzSUJ2UmFDcW1QUWNcIlxuWzFdIFwiNVBycnRsbllOb2ttcEVDcFp0UWhWT1wiXG5bMV0gXCI1YnZlOGxLbWkxQ2FmSzBvbGNmVTBsXCJcblsxXSBcIjF5dXBickk3Uk9oaWdJSHBRQmV2UGhcIlxuWzFdIFwiNTNUSU9oek5wUnBsOHhLZHNjU1FTdlwiXG5bMV0gXCI0bkhuWFpmcjRJZHhZZ21Za0g4aXZaXCJcblsxXSBcIjBreVpwNTFlMXNuQ2ZVdERKbFhWaHFcIlxuWzFdIFwiNlZ3TEpBdll2N29VVktNQXZDNDZzSFwiXG5bMV0gXCI0YTgyQ0tyQVhkZUhGSlBUd0V1RW04XCJcblsxXSBcIjR3RkJiZVIwM2ZhaDlud3kwaXN5TzhcIlxuWzFdIFwiNnB2d1lNVnMxM0VKOGpqNExNWDBhVlwiXG5bMV0gXCI2ZFptczVnZERjQ0Z2ZnVCekdQUkRIXCJcblsxXSBcIjRBWGx4cG9mbmlRTzBySnJYdWMzVTVcIlxuWzFdIFwiNHRjeGczeFdmNHkwVjZtVHQxVlNGb1wiXG5bMV0gXCI1TExhN1hiNnhmUlZwUlhnanlldnZNXCJcblsxXSBcIjBIcTJaaEY0dXVESmhlUUJmc1hVNHBcIlxuWzFdIFwiM3pGeTFSMFFoaVQzWU1YVHhWMEtSZFwiXG5bMV0gXCIyOVBsN2dZdG1zekNYdHRiWW1WMFlvXCJcblsxXSBcIjdHZ1ZCRnZEY3BpNDJMQ2RDSHdmOGVcIlxuWzFdIFwiMThyem9WYkNZS3NZSmppOEowUlNlTVwiXG5bMV0gXCI1RmVBc2VaN1d3cFhEZG5neUVjNVZYXCJcblsxXSBcIjBnVUxmQmsyYWlMcFQ4UDlxdnVpRENcIlxuWzFdIFwiMlZ6WEI0YWdaYlRMYndZcjNJdWptWVwiXG5bMV0gXCI0bXZrYzRoQmpsOE5nWXV1WW9iMWtYXCJcblsxXSBcIjcxejYwc3hDT2JZb05oS2hKcFJTa3RcIlxuWzFdIFwiMWF3SzNhY2JhWEk0V3U5Qkc1Z2lORFwiXG5bMV0gXCIxbjA0MlVpNXdtNlJMRGlDNFdzeFB4XCJcblsxXSBcIjBPZUhqcVFYeDB2Slp4VGZmSHcxYnNcIlxuWzFdIFwiM1RuOUx3MkFHZGR5cVlOYkJOeHUwN1wiXG5bMV0gXCI3anZnZnBzOWxFVjlIYm11RnBHNGNKXCJcblsxXSBcIjFraHBndFZrcjIzbVFSU0pUbEFSa3BcIlxuWzFdIFwiMUxOT1pRbHdlOWlieFAxSk9aMTRHOVwiXG5bMV0gXCI0VWQ2eGREQ1d3a0lydDRLS0owcVFEXCJcblsxXSBcIjB3UFRxWDhXSHZSeEZWa0RGNGhINEpcIlxuWzFdIFwiNTk4MG5qcTRFY0RHazNKd3VybkVMZlwiXG5bMV0gXCIwWk5IbU5xNEMyQXZsTjhrM2NtOGU1XCJcblsxXSBcIjc5Zzl4R01FVUdsd3F5b09rT2Vtb05cIlxuWzFdIFwiN3ZONjRUR1hKR1g4QnJUaDhwRVZ5YVwiXG5bMV0gXCI1T2pwZFFMUU5GNTl3c1p4OVM5YjEwXCJcblsxXSBcIjc0RHJwTTZ0QVd2Y011NlV4a285eGJcIlxuWzFdIFwiNWx6TGVkQ1BCazJBMzZLUVVXRXQ1UFwiXG5bMV0gXCIxMmhvbUU0SnBCZXk1Y2NrZ29lcFI3XCJcblsxXSBcIjFNQWtyQlNnMW5zRnJmY01yUXNBNVNcIlxuWzFdIFwiMnBvaDFUQzVmc1YxZ0FzMXNYR1NJNlwiXG5bMV0gXCIyWjNXR1hORjNPcWFKM1hhQWFQMTBhXCJcblsxXSBcIjBwQ01wM3IybVlrTWxkeXZHNEhMWktcIlxuWzFdIFwiNjhLcGpFWE5zVDFRbUZXUW1tZWNha1wiXG5bMV0gXCIzaHYzSlJHOFBzem5DQWN0aFBrVjF5XCJcblsxXSBcIjZXZ3BMVVR0TmFiOHM4UG5NTmlLYk1cIlxuWzFdIFwiNXJMcW9Hc1NoVWI2SlAwVjM1N0tKSVwiXG5bMV0gXCIzRXVxcm9kR2swQ2RUY29IdVkwRVR4XCJcblsxXSBcIjVTTnRqSjZIOWJ2bHhPbEhhUE9weEpcIlxuWzFdIFwiMWRrSG8waFM5S256bHNSU2JJalp6aVwiXG5bMV0gXCI2WEI2a2djenRVRVlYU2ZjbzNPN3RMXCJcblsxXSBcIjJBbVMwYkgwaDhwQWJ6NEJXZkNxTXpcIlxuWzFdIFwiMmJiZGRHVmVwYXk5NmhXeERmbjF0eVwiXG5bMV0gXCI1TGVHVDB6aUZwSzNTa3ZyNmp3SWdGXCJcblsxXSBcIjQzWlNTQlNXMlkzUWNTdGsxZnYyZmxcIlxuWzFdIFwiMndvUHFIblplazczWkljb3psazBJZ1wiXG5bMV0gXCI0SDRpblU5aDhaMER2c1FMWnlxTWpzXCJcblsxXSBcIjNrM0lNdExiVUpiYmtpZHdYMkdWVExcIlxuWzFdIFwiMHVseXFGTzBmNmtHTTZkTHZVeDZyZlwiXG5bMV0gXCI2QWg3WE5ycmZjd05LdTdtWUlSUXZYXCJcblsxXSBcIjJFTDl1V1J1bEIxcmNnRG1qWU16VE9cIlxuWzFdIFwiM0ZtUlE5MmZCV1JEZW5WM210UFFFd1wiXG4ifQ== -->
 <pre><code>[1] &quot;2GEs9D56FRHqUAEwvlvBpw&quot;
@@ -2013,6 +2107,10 @@ temp &lt;- getTrackAnalysis(tracks$id)
 [1] &quot;2EL9uWRulB1rcgDmjYMzTO&quot;
 [1] &quot;3FmRQ92fBWRDenV3mtPQEw&quot;</code></pre>
 <!-- rnb-output-end -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxudHJhY2tzIDwtIGxlZnRfam9pbih0cmFja3MsIHRlbXAsIGJ5PVwiaWRcIilcblxuYGBgIn0= -->
+<pre class="r"><code>tracks &lt;- left_join(tracks, temp, by=&quot;id&quot;)
+</code></pre>
+<!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 </div>
@@ -2020,12 +2118,16 @@ temp &lt;- getTrackAnalysis(tracks$id)
 <h1>Merging Time Signature</h1>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyBSZWFkIGluIGNsZWFuZWQgdXAgdGltZSBzaWduYXR1cmUgZGF0YSB0YWtlbiBmcm9tOlxuIyBodHRwczovL2RvY3MuZ29vZ2xlLmNvbS9zcHJlYWRzaGVldHMvZC8xQVNLYnVXbmVFeVgxXzhXZnhqS1dGaTBVMU9YSjhKYm5lZjh6THJRMDFXay9lZGl0I2dpZD0wXG50aW1lU2lnbmF0dXJlcyA8LSByZWFkX2V4Y2VsKFwiRGF0YS90aW1lc2lnbmF0dXJlcy54bHN4XCIsIHNoZWV0PVwiTWFpbiBEaXNjb2dyYXBoeVwiKVxuXG4jIE1lcmdlIHRoZSB0aW1lIHNpZ25hdHVyZXMgaW50byB0aGUgdHJhY2sgZGF0YXNldFxudHJhY2tzIDwtIHRyYWNrcyAlPiUgXG4gIG11dGF0ZShuYW1lMT1jYXNlX3doZW4oXG4gICAgbmNoYXIobmFtZSkgPj0gMjAgfiBzdWJzdHIodG9sb3dlcihuYW1lKSwgMSwgMjApLFxuICAgIFQgfiB0b2xvd2VyKG5hbWUpXG4gICAgKSkgJT4lIFxuICBsZWZ0X2pvaW4odGltZVNpZ25hdHVyZXMgJT4lIFxuICAgICAgICAgICAgICBtdXRhdGUobmFtZTE9Y2FzZV93aGVuKFxuICAgICAgICAgICAgICAgICAgICAgICAgICAgIG5jaGFyKG5hbWUpID49IDIwIH4gdG9sb3dlcihzdWJzdHIobmFtZSwgMSwgMjApKSxcbiAgICAgICAgICAgICAgICAgICAgICAgICAgICBUIH4gdG9sb3dlcihuYW1lKSkpLCBcbiAgICAgICAgICAgIGJ5PVwibmFtZTFcIikgJT4lIFxuICBzZWxlY3QoLW5hbWUxLCAtbmFtZS55KSAlPiUgXG4gIHJlbmFtZShuYW1lPVwibmFtZS54XCIpXG5gYGAifQ== -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyBSZWFkIGluIGNsZWFuZWQgdXAgdGltZSBzaWduYXR1cmUgZGF0YSB0YWtlbiBmcm9tOlxuIyBodHRwczovL2RvY3MuZ29vZ2xlLmNvbS9zcHJlYWRzaGVldHMvZC8xQVNLYnVXbmVFeVgxXzhXZnhqS1dGaTBVMU9YSjhKYm5lZjh6THJRMDFXay9lZGl0I2dpZD0wXG50aW1lU2lnbmF0dXJlcyA8LSByZWFkX2V4Y2VsKFwiRGF0YS90aW1lc2lnbmF0dXJlcy54bHN4XCIsIHNoZWV0PVwiTWFpbiBEaXNjb2dyYXBoeVwiKVxuYGBgIn0= -->
 <pre class="r"><code># Read in cleaned up time signature data taken from:
 # https://docs.google.com/spreadsheets/d/1ASKbuWneEyX1_8WfxjKWFi0U1OXJ8Jbnef8zLrQ01Wk/edit#gid=0
-timeSignatures &lt;- read_excel(&quot;Data/timesignatures.xlsx&quot;, sheet=&quot;Main Discography&quot;)
-
-# Merge the time signatures into the track dataset
+timeSignatures &lt;- read_excel(&quot;Data/timesignatures.xlsx&quot;, sheet=&quot;Main Discography&quot;)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiV2FybmluZzogRXhwZWN0aW5nIG51bWVyaWMgaW4gQjE0MiAvIFIxNDJDMjogZ290IGEgZGF0ZVdhcm5pbmc6IEV4cGVjdGluZyBudW1lcmljIGluIEIxNTMgLyBSMTUzQzI6IGdvdCBhIGRhdGVXYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBDMTU0IC8gUjE1NEMzOiBnb3QgYSBkYXRlV2FybmluZzogRXhwZWN0aW5nIG51bWVyaWMgaW4gQzE1NSAvIFIxNTVDMzogZ290IGEgZGF0ZVdhcm5pbmc6IEV4cGVjdGluZyBudW1lcmljIGluIEMxNTYgLyBSMTU2QzM6IGdvdCBhIGRhdGVXYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBDMTU3IC8gUjE1N0MzOiBnb3QgYSBkYXRlV2FybmluZzogRXhwZWN0aW5nIG51bWVyaWMgaW4gQzE1OCAvIFIxNThDMzogZ290IGEgZGF0ZVdhcm5pbmc6IEV4cGVjdGluZyBudW1lcmljIGluIEMxNTkgLyBSMTU5QzM6IGdvdCBhIGRhdGVXYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBDMTYwIC8gUjE2MEMzOiBnb3QgYSBkYXRlV2FybmluZzogRXhwZWN0aW5nIG51bWVyaWMgaW4gQzE2MSAvIFIxNjFDMzogZ290IGEgZGF0ZVdhcm5pbmc6IEV4cGVjdGluZyBudW1lcmljIGluIEMxNjIgLyBSMTYyQzM6IGdvdCBhIGRhdGVXYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBDMTYzIC8gUjE2M0MzOiBnb3QgYSBkYXRlV2FybmluZzogRXhwZWN0aW5nIG51bWVyaWMgaW4gQzE2NCAvIFIxNjRDMzogZ290IGEgZGF0ZVdhcm5pbmc6IEV4cGVjdGluZyBudW1lcmljIGluIEMxNjUgLyBSMTY1QzM6IGdvdCBhIGRhdGVXYXJuaW5nOiBFeHBlY3RpbmcgbnVtZXJpYyBpbiBDMTY2IC8gUjE2NkMzOiBnb3QgYSBkYXRlV2FybmluZzogRXhwZWN0aW5nIG51bWVyaWMgaW4gQzE2NyAvIFIxNjdDMzogZ290IGEgZGF0ZVdhcm5pbmc6IEV4cGVjdGluZyBudW1lcmljIGluIEMxNjggLyBSMTY4QzM6IGdvdCBhIGRhdGVcbiJ9 -->
+<pre><code>Warning: Expecting numeric in B142 / R142C2: got a dateWarning: Expecting numeric in B153 / R153C2: got a dateWarning: Expecting numeric in C154 / R154C3: got a dateWarning: Expecting numeric in C155 / R155C3: got a dateWarning: Expecting numeric in C156 / R156C3: got a dateWarning: Expecting numeric in C157 / R157C3: got a dateWarning: Expecting numeric in C158 / R158C3: got a dateWarning: Expecting numeric in C159 / R159C3: got a dateWarning: Expecting numeric in C160 / R160C3: got a dateWarning: Expecting numeric in C161 / R161C3: got a dateWarning: Expecting numeric in C162 / R162C3: got a dateWarning: Expecting numeric in C163 / R163C3: got a dateWarning: Expecting numeric in C164 / R164C3: got a dateWarning: Expecting numeric in C165 / R165C3: got a dateWarning: Expecting numeric in C166 / R166C3: got a dateWarning: Expecting numeric in C167 / R167C3: got a dateWarning: Expecting numeric in C168 / R168C3: got a date</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyBNZXJnZSB0aGUgdGltZSBzaWduYXR1cmVzIGludG8gdGhlIHRyYWNrIGRhdGFzZXRcbnRyYWNrcyA8LSB0cmFja3MgJT4lIFxuICBtdXRhdGUobmFtZTE9Y2FzZV93aGVuKFxuICAgIG5jaGFyKG5hbWUpID49IDIwIH4gc3Vic3RyKHRvbG93ZXIobmFtZSksIDEsIDIwKSxcbiAgICBUIH4gdG9sb3dlcihuYW1lKVxuICAgICkpICU+JSBcbiAgbGVmdF9qb2luKHRpbWVTaWduYXR1cmVzICU+JSBcbiAgICAgICAgICAgICAgbXV0YXRlKG5hbWUxPWNhc2Vfd2hlbihcbiAgICAgICAgICAgICAgICAgICAgICAgICAgICBuY2hhcihuYW1lKSA+PSAyMCB+IHRvbG93ZXIoc3Vic3RyKG5hbWUsIDEsIDIwKSksXG4gICAgICAgICAgICAgICAgICAgICAgICAgICAgVCB+IHRvbG93ZXIobmFtZSkpKSwgXG4gICAgICAgICAgICBieT1cIm5hbWUxXCIpICU+JSBcbiAgc2VsZWN0KC1uYW1lMSwgLW5hbWUueSkgJT4lIFxuICByZW5hbWUobmFtZT1cIm5hbWUueFwiKVxuYGBgIn0= -->
+<pre class="r"><code># Merge the time signatures into the track dataset
 tracks &lt;- tracks %&gt;% 
   mutate(name1=case_when(
     nchar(name) &gt;= 20 ~ substr(tolower(name), 1, 20),
@@ -2039,6 +2141,9 @@ tracks &lt;- tracks %&gt;%
   select(-name1, -name.y) %&gt;% 
   rename(name=&quot;name.x&quot;)</code></pre>
 <!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiV2FybmluZzogRGV0ZWN0ZWQgYW4gdW5leHBlY3RlZCBtYW55LXRvLW1hbnkgcmVsYXRpb25zaGlwIGJldHdlZW4gYHhgIGFuZCBgeWAuXG4ifQ== -->
+<pre><code>Warning: Detected an unexpected many-to-many relationship between `x` and `y`.</code></pre>
+<!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 </div>
@@ -2054,6 +2159,9 @@ billboard  &lt;- read_excel(&quot;Data/billboard.xlsx&quot;)
 albums &lt;- albums %&gt;% 
   left_join(billboard)</code></pre>
 <!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiSm9pbmluZyB3aXRoIGBieSA9IGpvaW5fYnkobmFtZSlgXG4ifQ== -->
+<pre><code>Joining with `by = join_by(name)`</code></pre>
+<!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 </div>
