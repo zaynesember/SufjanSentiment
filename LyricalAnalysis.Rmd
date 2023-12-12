@@ -74,16 +74,71 @@ df_lyrics <- data.frame(name = basename(files),
   left_join(data.frame(read.csv("Data/SongLyrics/FileIDCrosswalk.csv")) %>% 
               select(name, id))
 
-tracks <- left_join(tracks, df_lyrics %>% select(-name))
+tracks_wlyrics <- left_join(tracks, df_lyrics %>% select(-name))
 
-saveRDS(tracks, "Data/RDS Files/tracks.rds")
+saveRDS(tracks_wlyrics, "Data/RDS Files/tracks_wlyrics.rds")
 ```
+
 Using AFINN rather than bing or nrc bc of this: https://paulvanderlaken.com/2017/12/27/sentiment-analysis-lexicon-quality/
 ```{r}
-tracks %>% select(id, text) %>% 
-  filter(id=="4lyIHAc8sk6lm9iN5B8nmj") %>% 
+track_sentiment_afinn <- tracks_wlyrics %>% select(name, id, album_name, album_id, text) %>% 
   unnest_tokens("word", "text", token="words", format="text") %>% 
-  inner_join(get_sentiments("nrc"))
+  inner_join(get_sentiments("afinn")) %>% 
+  filter(word != "like") %>% # Filter out (literal) false positive from similes
+  mutate(sentiment_dir = ifelse(value<0, "negative", "positive")) %>% 
+  group_by(id, sentiment_dir) %>% 
+  summarize(sum = sum(value), across()) %>% 
+  select(-word, -value) %>% 
+  distinct() %>% 
+  pivot_wider(names_from = sentiment_dir, values_from = sum) %>% 
+  replace_na(list(positive = 0, negative = 0)) %>% 
+  ungroup() %>% 
+  mutate(net = positive + negative) %>% 
+  left_join(df_trackviz %>% select(id, order))
+
+track_sentiment_afinn %>% 
+  ggplot(aes(x=order, y=net, fill=factor(album_name))) +
+  geom_bar(stat="identity") +
+  scale_x_discrete(expand = c(0,0)) +
+  scale_color_manual(values=colors) +
+  scale_fill_manual(values=fills2) +
+  theme_void() +
+  theme(
+    axis.text.y = element_text(size=7),
+    axis.title.y = element_text(angle=90, size=9, 
+                                margin=margin(0,5,0,0, unit="pt")),
+    legend.position="none",
+    strip.background = element_blank(),
+    strip.text = element_text(angle=0, size=0, color="ivory",
+                              margin=margin(1.19,0,0,0, unit="cm")),
+    #strip.text = element_blank(),
+    panel.spacing = unit(.05, "lines"),
+    plot.margin = margin(0,.05,.05,0, unit="cm"),
+    panel.background = element_rect(fill="ivory", color="ivory"),
+    plot.background = element_rect(fill="ivory"),
+    panel.grid.major = element_line(color="seashell3", 
+                                    linewidth=.25, linetype="dotted"),
+    text = element_text(family="Book Antiqua")
+  ) +
+  facet_wrap(~factor(album_name,
+                     levels=unique(track_sentiment_afinn$album_name),), nrow=1,
+             strip.position="bottom",
+             scales="free_x",
+             labeller=label_wrap_gen(15)) +
+  annotations[[1]] +
+  annotations[[2]] +
+  annotations[[3]] +
+  annotations[[4]] +
+  annotations[[5]] +
+  annotations[[6]] +
+  annotations[[7]] +
+  annotations[[8]] +
+  annotations[[9]] +
+  annotations[[10]] +
+  annotations[[11]] +
+  coord_cartesian(clip = 'off')
+
+
 ```
 
 ```{r}
