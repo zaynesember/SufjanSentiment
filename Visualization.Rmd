@@ -43,6 +43,8 @@ library(jpeg)
 
 albumpaths <- paste0("Data/AlbumCovers/", c("ASunCame", "Michigan", "SevenSwans", "Illinois", "TheAvalanche", "TheAgeOfAdz", "AllDelightedPeople", "CarrieAndLowell", "TheAscension", "ABeginnersMind", "Javelin"), ".jpg")
 
+
+
 imgs <- lapply(albumpaths, readJPEG)
 ```
 
@@ -77,7 +79,6 @@ df_trackviz %>%
   scale_x_discrete(expand = c(0,0)) +
   scale_color_manual(values=colors) +
   scale_fill_manual(values=fills2) +
-  theme_void() +
   theme(
     axis.text.y = element_text(size=7),
     axis.title.y = element_text(angle=90, size=9, 

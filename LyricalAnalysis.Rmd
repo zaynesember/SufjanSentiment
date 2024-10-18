@@ -35,10 +35,10 @@ lyric_cleaner <- function(lyrics){
   lyrics <- str_replace_all(lyrics, "&amp", "and")
   
   # Remove punctuation, digits, and emojis
+  lyrics <- gsub("'s ", " ", lyrics)
   lyrics <- gsub("[[:punct:]]", " ", lyrics)
   lyrics <- gsub("[[:digit:]]", "", lyrics)
   lyrics <- gsub(" ’", "", lyrics)
-  lyrics <- gsub("'s ", " ", lyrics)
   lyrics <- gsub("s' ", "s ", lyrics)
   lyrics <- gsub("’ ", " ", lyrics)
   
@@ -94,7 +94,7 @@ track_sentiment_afinn <- tracks_wlyrics %>% select(name, id, album_name, album_i
   replace_na(list(positive = 0, negative = 0)) %>% 
   ungroup() %>% 
   mutate(net = positive + negative) %>% 
-  left_join(df_trackviz %>% select(id, order))
+  left_join(df_trackviz %>% select(id, order) %>% unique())
 
 track_sentiment_afinn %>% 
   ggplot(aes(x=order, y=net, fill=factor(album_name))) +

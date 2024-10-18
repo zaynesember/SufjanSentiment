@@ -1,0 +1,68 @@
+---
+title: "Master Data Assembly"
+output: html_notebook
+---
+
+```{r}
+library(tidyverse)
+library(stringr)
+```
+
+```{r}
+artist <- readRDS("Data/RDS Files/artist.rds")
+albums <- readRDS("Data/RDS Files/albums.rds")
+tracks <- readRDS("Data/RDS Files/tracks.rds")
+tracks_wlyrics <- readRDS("Data/RDS Files/tracks_wlyrics.rds")
+track_sentiment_afinn <- readRDS("Data/RDS Files/track_sentiment_afinn.rds")
+```
+
+```{r}
+df_trackviz <- tracks %>% 
+  mutate(duration_s = duration_ms/1000) %>% 
+  mutate(duration_min = duration_s/60) %>% 
+  left_join(albums %>% select(id, release_date), 
+            by=c(album_id="id")) %>% 
+  arrange(release_date) %>% 
+  mutate(order=row_number()) %>% unique()
+
+df_trackviz %>% group_by(album_id) %>% 
+  mutate(tracknumber=n()) %>% 
+  ungroup() %>% 
+  mutate(order=n())
+
+albumpaths <- paste0("Data/AlbumCovers_lowestquality/", c("ASunCame", "Michigan", "SevenSwans", "Illinois", "TheAvalanche", "TheAgeOfAdz", "AllDelightedPeople", "CarrieAndLowell", "TheAscension", "ABeginnersMind", "Javelin"), ".jpg")
+
+albumnames <- unique(df_trackviz$album_name)
+
+df_trackviz <- df_trackviz %>% 
+  left_join(data.frame(album_name=albumnames, album_img_path=albumpaths))
+
+
+df_trackviz <- df_trackviz %>% 
+  left_join(tracks_wlyrics %>% select(id, text)) %>% 
+  mutate(num_of_words=ifelse(is.na(text), 0, str_count(text, '\\w+'))) %>% 
+  rowwise() %>% 
+  mutate(mean_word_length=ifelse(text=="", NA, mean(nchar(unlist(strsplit(text, '\\s+'))), na.rm=T)))
+  
+
+df_trackviz <- df_trackviz %>% left_join(track_sentiment_afinn %>% select(id, positive, negative, net), by="id")
+
+
+album_tracknumber_crosswalk <- df_trackviz %>% 
+  select(album_id, track_number) %>% 
+  group_by(album_id) %>% 
+  slice_max(track_number) %>% rename(num_tracks=track_number)
+
+df_trackviz <- df_trackviz %>% left_join(album_tracknumber_crosswalk) %>% 
+  mutate(track_number_normalized = 100*track_number/num_tracks) %>% 
+  group_by(album_id) %>% 
+  mutate(album_duration_s=sum(duration_s, na.rm=T),
+         duration_s_cumsum=dplyr::lag(cumsum(duration_s))) %>% 
+  mutate(duration_s_cumsum=ifelse(is.na(duration_s_cumsum), 0, duration_s_cumsum)) %>% 
+  rename(track_starting_point=duration_s_cumsum) %>% 
+  mutate(track_starting_point_normalized=100*track_starting_point/album_duration_s)
+
+saveRDS(df_trackviz %>% ungroup(), "Data/RDS Files/df_trackviz.rds")
+
+```
+
