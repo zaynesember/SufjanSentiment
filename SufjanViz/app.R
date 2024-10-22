@@ -5,18 +5,8 @@ library(shiny)
 library(bslib)
 library(ggplot2)
 library(ggExtra)
-
-# df_trackviz <- readRDS("SufjanViz/Data/df_trackviz.rds") %>%
-#   rename(`Album`=album_name,
-#          `Duration (s)`=duration_s,
-#          `Track position in album (%)*`=track_starting_point_normalized,
-#          `Loudness`=loudness,
-#          `Tempo (bpm)`=tempo,
-#          `Sentiment (AFINN)`=net,
-#          `Number of words in lyrics`=num_of_words,
-#          `Words per minute`=words_per_minute,
-#          `Mean word length in lyrics`=mean_word_length,
-#          `Album release date`=release_date)
+library(grid)
+library(jpeg)
 
 album_colors <- c("A Sun Came!"="#7b7644", "Michigan"="#d32831",
                   "Seven Swans"="#010508", "Illinois"="#4d758c",
@@ -25,12 +15,32 @@ album_colors <- c("A Sun Came!"="#7b7644", "Michigan"="#d32831",
                   "The Ascension"="#f8a139", "A Beginner's Mind"="#1769a1",
                   "Javelin"="#e688a3")
 
+album_levels <- c("A Sun Came!", "Michigan",
+                  "Seven Swans", "Illinois",
+                  "The Avalanche", "The Age of Adz",
+                  "All Delighted People", "Carrie & Lowell",
+                  "The Ascension", "A Beginner's Mind",
+                  "Javelin")
+
 album_colors_accents <- c("A Sun Came!"="#c3a8a3", "Michigan"="#b9d3c6",
-                 "Seven Swans"="#010508", "Illinois"="#fbe956",
-                 "The Avalanche"="#7793a8", "The Age of Adz"="#1b1d1a",
-                 "All Delighted People"="#ffffff", "Carrie & Lowell"="#b7b396",
-                 "The Ascension"="#33323a", "A Beginner's Mind"="#f1d76e",
-                 "Javelin"="#a78f6b")
+                          "Seven Swans"="#010508", "Illinois"="#fbe956",
+                          "The Avalanche"="#7793a8", "The Age of Adz"="#1b1d1a",
+                          "All Delighted People"="#ffffff", "Carrie & Lowell"="#b7b396",
+                          "The Ascension"="#33323a", "A Beginner's Mind"="#f1d76e",
+                          "Javelin"="#a78f6b")
+
+df_trackviz <- readRDS("Data/df_trackviz.rds") %>%
+  rename(`Album`=album_name,
+         `Duration (s)`=duration_s,
+         `Track position in album (%)*`=track_starting_point_normalized,
+         `Loudness`=loudness,
+         `Tempo (bpm)`=tempo,
+         `Sentiment (AFINN)`=net,
+         `Number of words in lyrics`=num_of_words,
+         `Words per minute`=words_per_minute,
+         `Mean word length in lyrics`=mean_word_length,
+         `Album release date`=release_date) %>%
+  mutate(Album=factor(Album, levels=album_levels))
 
 
 df_num <- df_trackviz %>% select(`Duration (s)`,
@@ -51,6 +61,7 @@ df_bar <- df_trackviz %>% select(`Duration (s)`,
                                  `Words per minute`,
                                  `Mean word length in lyrics`,
                                  `Sentiment (AFINN)`)
+# UI
 
 ui <- navbarPage("SufjanViz",
                  tabPanel("Scatterplot",
@@ -58,6 +69,8 @@ ui <- navbarPage("SufjanViz",
                             tags$head(tags$style(HTML(".selectize-input,
                                                       .selectize-dropdown,
                                                       .checkbox,
+                                                      #smooth_type-label,
+                                                      #margin_type-label,
                                                       #xvar-label,
                                                       #yvar-label {font-size: 75%;}"))),
                             mainPanel(
@@ -72,13 +85,15 @@ ui <- navbarPage("SufjanViz",
                                   varSelectInput("xvar", "X variable", df_num, selected = "Duration (s)"),
                                   varSelectInput("yvar", "Y variable", df_num, selected = "Tempo (bpm)"),
                                   checkboxInput("exclude_instrumentals", "Exclude instrumental tracks", FALSE),
-                                  checkboxInput("by_albums", "Indicate album", TRUE),
+                                  checkboxInput("by_albums", "Group by album", TRUE),
                                   conditionalPanel(condition="input.by_albums==true",
                                                    checkboxInput("album_images", "Use album covers as points", FALSE),
                                                    conditionalPanel(condition="input.album_images==true",
                                                                     sliderInput("slider", "Point size",
                                                     min = 0.001, max = 0.5, value = .03))),
                                   checkboxInput("show_margins", "Show distributions", FALSE),
+                                  conditionalPanel(condition="input.show_margins==true",
+                                                   selectInput("margin_type", "Type", list("Density", "Histogram"), "Density")),
                                   checkboxInput("smooth", "Add smoothing"),
                                   conditionalPanel(condition="input.smooth==true",
                                                    selectInput("smooth_type", "Smoothing function",
@@ -93,6 +108,10 @@ ui <- navbarPage("SufjanViz",
                           )),
                  tabPanel("Barplot",
                           page_sidebar(
+                            tags$head(tags$style(HTML(".selectize-input,
+                                                      .selectize-dropdown,
+                                                      .checkbox,
+                                                      #barvar-label {font-size: 75%;}"))),
                             mainPanel(
                               plotOutput("bar"),
                               hr(),
@@ -101,13 +120,21 @@ ui <- navbarPage("SufjanViz",
                             ),
                             sidebar=sidebar(
                               h6("Plot options"),
-                              varSelectInput("barvar", "Variable", df_bar, selected = "Duration (s)")
+                              varSelectInput("barvar", "Variable", df_bar, selected = "Duration (s)"),
+                              hr(), # Add a horizontal rule
+                              checkboxGroupInput(
+                                "Album_bar", "Filter by album",
+                                choices = unique(df_trackviz$Album),
+                                selected = unique(df_trackviz$Album)
+                              )
                             )
                           )
                  ),
                  tabPanel("About",
                           mainPanel())
 )
+
+# Server
 
 server <- function(input, output, session) {
 
@@ -157,7 +184,8 @@ server <- function(input, output, session) {
     p <- ggplot(subsetted(), aes(!!input$xvar, !!input$yvar)) +
       theme_bw() +
       list(
-        theme(legend.position = "bottom"),
+        theme(legend.position = "bottom",
+              legend.text=element_text(size=8)),
         if(input$by_albums) aes(color = Album),
         if(input$by_albums) scale_color_manual(values=album_colors),
         geom_point(),
@@ -170,8 +198,8 @@ server <- function(input, output, session) {
       )
 
     if (input$show_margins) {
-      margin_type <- if (input$by_albums) "density" else "histogram"
-      p <- ggExtra::ggMarginal(p, type = margin_type, margins = "both",
+      #type <- if(input$margin_type=="Density") "density" else "histogram"
+      p <- ggExtra::ggMarginal(p, type = tolower(input$margin_type), margins = "both",
                                size = 8, groupColour = input$by_albums, groupFill = input$by_albums)
     }
 
@@ -187,37 +215,47 @@ server <- function(input, output, session) {
   # Bar tab elements
 
   subsetted_bar <- reactive({
-    #req(input$Album)
-    df_trackviz
+    req(input$Album_bar)
+    df_trackviz %>% filter(Album %in% input$Album_bar)
   })
 
   output$bar <- renderPlot({
-    p2 <- ggplot(subsetted_bar(), aes(x=`order`, y=!!input$barvar,
-                                      color=factor(`Album`),
+
+    strip_text_size <- {
+      if(length(input$Album_bar)==11) 6
+      else if(length(input$Album_bar %in% 6:7)) 6.5
+      else if(length(input$Album_bar %in% 4:6)) 7
+      else if(length(input$Album_bar %in% 0:4)) 8
+    }
+
+    p2 <- ggplot(subsetted_bar(), aes(x=track_number, y=!!input$barvar,
+                                      #color=factor(`Album`),
+                                      #group=factor(`Album`),
                                       fill=factor(`Album`))) +
       theme_bw() +
       list(
         geom_bar(stat="identity",position="dodge", width=.55),
         scale_x_discrete(expand = c(0,0)),
-        scale_color_manual(values=album_colors),
-        scale_fill_manual(values=album_colors_accents),
+        #scale_color_manual(values=album_colors),
+        scale_fill_manual(values=album_colors),
+
         theme(
+          axis.title.x=element_blank(),
           axis.text.y = element_text(size=7),
           axis.title.y = element_text(angle=90, size=9,
                                       margin=margin(0,5,0,0, unit="pt")),
           legend.position="none",
           strip.background = element_blank(),
-          strip.text = element_text(angle=0, size=0, color="ivory",
-                                    margin=margin(1.19,0,0,0, unit="cm")),
-          #strip.text = element_blank(),
+          strip.text.x=element_text(size=strip_text_size, vjust=1, margin=margin(-0.1,0,0,0)),
           panel.spacing = unit(.05, "lines"),
-          plot.margin = margin(0,.05,.05,0, unit="cm"),
-          #panel.background = element_rect(fill="ivory", color="ivory"),
-          #plot.background = element_rect(fill="ivory"),
+          panel.border = element_blank(),
+          plot.margin = margin(0,.05,.05,0),
           panel.grid.major = element_line(color="seashell3",
                                           linewidth=.25, linetype="dotted")
         )
-      )
+      ) +
+      facet_wrap(~Album, nrow=1, scales="free_x", strip.position="bottom",
+                 labeller=label_wrap_gen(10))
 
     p2
   }, res = 100)
@@ -230,7 +268,8 @@ server <- function(input, output, session) {
 }
 
 # TODO
+# Add explanation to scatterplot that each observation is a track
 # word clouds
-# add option on bar chart to switch to points, maybe change y scale
+# regression tool
 
 shinyApp(ui, server)
