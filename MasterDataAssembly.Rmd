@@ -14,6 +14,7 @@ albums <- readRDS("Data/RDS Files/albums.rds")
 tracks <- readRDS("Data/RDS Files/tracks.rds")
 tracks_wlyrics <- readRDS("Data/RDS Files/tracks_wlyrics.rds")
 track_sentiment_afinn <- readRDS("Data/RDS Files/track_sentiment_afinn.rds")
+df_lyrics_formatted <- readRDS("Data/RDS Files/df_lyrics_formatted.rds")
 ```
 
 ```{r}
@@ -64,7 +65,9 @@ df_trackviz <- df_trackviz %>% left_join(album_tracknumber_crosswalk) %>%
   mutate(track_starting_point_normalized=100*track_starting_point/album_duration_s,
          words_per_minute=num_of_words/(duration_s/60))
 
-saveRDS(df_trackviz %>% ungroup(), "Data/RDS Files/df_trackviz.rds")
+df_trackviz <- df_trackviz %>% left_join(df_lyrics_formatted)
+
+saveRDS(df_trackviz %>% ungroup(), "SufjanViz/Data/df_trackviz.rds")
 
 ```
 

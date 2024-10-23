@@ -79,6 +79,18 @@ tracks_wlyrics <- left_join(tracks, df_lyrics %>% select(-name))
 saveRDS(tracks_wlyrics, "Data/RDS Files/tracks_wlyrics.rds")
 ```
 
+Getting formatted lyrics for Shiny
+```{r}
+lyrics_formatted <- lapply(files, read_file)
+
+df_lyrics_formatted <- data.frame(name=basename(files), lyrics=unlist(lyrics_formatted)) %>% 
+  left_join(data.frame(read.csv("Data/SongLyrics/FileIDCrosswalk.csv")) %>% 
+              select(name, id)) %>% select(-name)
+
+saveRDS(df_lyrics_formatted, "Data/RDS Files/df_lyrics_formatted.rds")
+```
+
+
 Using AFINN rather than bing or nrc bc of this: https://paulvanderlaken.com/2017/12/27/sentiment-analysis-lexicon-quality/
 ```{r}
 track_sentiment_afinn <- tracks_wlyrics %>% select(name, id, album_name, album_id, text) %>% 
