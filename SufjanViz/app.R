@@ -185,7 +185,7 @@ ui <- navbarPage("SufjanViz", fluid=T,
                             hr(),
                             sliderInput("freq",
                                         "Min Frequency:",
-                                        min = 1,  max = 100, value = 50)
+                                        min = 1,  max = 30, value = 1)
                            ),
                             column(6,
                               wordcloud2Output("wordcloud"),
@@ -432,7 +432,10 @@ server <- function(input, output, session) {
 }
 
 # TODO
-# make freq slider input reactive
+# input slider causing weird behavior
+# words too small in cloud
+# Eugene lyrics
 # regression tool
+# position vs. loudness and tempo regression
 
 shinyApp(ui, server)
