@@ -7,10 +7,10 @@ library(ggplot2)
 library(ggExtra)
 library(grid)
 library(jpeg)
-#library(wordcloud)
 library(wordcloud2)
 library(memoise)
 library(tm)
+library(markdown)
 
 album_colors <- c("A Sun Came!"="#7b7644", "Michigan"="#d32831",
                   "Seven Swans"="#010508", "Illinois"="#4d758c",
@@ -199,7 +199,9 @@ ui <- navbarPage("SufjanViz", fluid=T,
                           )
                         ),
                  tabPanel("About",
-                          mainPanel())
+                          mainPanel(
+                            includeMarkdown("Data/aboutpage.md")
+                          ))
 )
 
 # Server
@@ -437,5 +439,9 @@ server <- function(input, output, session) {
 # Eugene lyrics
 # regression tool
 # position vs. loudness and tempo regression
+
+# About section notes
+# Non-lyric track data from Spotify API
+# Lyric data from Genius
 
 shinyApp(ui, server)
