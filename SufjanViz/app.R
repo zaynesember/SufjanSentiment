@@ -2,6 +2,7 @@
 library(tidyverse)
 library(ggimage)
 library(shiny)
+library(broom)
 library(bslib)
 library(ggplot2)
 library(ggExtra)
@@ -11,6 +12,7 @@ library(wordcloud2)
 library(memoise)
 library(tm)
 library(markdown)
+library(DT)
 
 album_colors <- c("A Sun Came!"="#7b7644", "Michigan"="#d32831",
                   "Seven Swans"="#010508", "Illinois"="#4d758c",
@@ -106,7 +108,7 @@ getTermMatrix <- memoise(function(song) {
 
 ui <- navbarPage("SufjanViz", fluid=T,
                  tabPanel("Scatterplot",
-                          page_sidebar(
+                          fluidRow(
                             tags$head(tags$style(HTML(".selectize-input,
                                                       .selectize-dropdown,
                                                       .checkbox,
@@ -114,38 +116,40 @@ ui <- navbarPage("SufjanViz", fluid=T,
                                                       #margin_type-label,
                                                       #xvar-label,
                                                       #yvar-label {font-size: 75%;}"))),
-                            mainPanel(
+                            column(3,
+                                #h6("Plot options"),
+                                varSelectInput("xvar", "X variable", df_num, selected = "Duration (s)"),
+                                varSelectInput("yvar", "Y variable", df_num, selected = "Tempo (bpm)"),
+                                checkboxInput("exclude_instrumentals", "Exclude instrumental tracks", FALSE),
+                                checkboxInput("by_albums", "Group by album", TRUE),
+                                conditionalPanel(condition="input.by_albums==true",
+                                                 checkboxInput("album_images", "Use album covers as points", FALSE),
+                                                 conditionalPanel(condition="input.album_images==true",
+                                                                  sliderInput("slider", "Point size",
+                                                                              min = 0.001, max = 0.5, value = .03))),
+                                checkboxInput("show_margins", "Show distributions", FALSE),
+                                conditionalPanel(condition="input.show_margins==true",
+                                                 selectInput("margin_type", "Type", list("Density", "Histogram"), "Density")),
+                                checkboxInput("smooth", "Add smoothing"),
+                                conditionalPanel(condition="input.smooth==true",
+                                                 selectInput("smooth_type", "Smoothing function",
+                                                             list("Linear"="lm", "Loess"="loess"), selected = "Linear")),
+                                hr(), # Add a horizontal rule
+                                checkboxGroupInput(
+                                  "Album", "Filter by album",
+                                  choices = unique(df_trackviz$Album),
+                                  selected = unique(df_trackviz$Album)
+                                )
+                              ),
+                            column(6,
                               plotOutput("scatter"),
                               hr(),
-                              h6("Summary Statistics", align="center"),
-                              div(DT::DTOutput("table"), style="font-size:75%")
+                              DTOutput("regression_table")
                             ),
-                            sidebar=
-                                sidebar(
-                                  #h6("Plot options"),
-                                  varSelectInput("xvar", "X variable", df_num, selected = "Duration (s)"),
-                                  varSelectInput("yvar", "Y variable", df_num, selected = "Tempo (bpm)"),
-                                  checkboxInput("exclude_instrumentals", "Exclude instrumental tracks", FALSE),
-                                  checkboxInput("by_albums", "Group by album", TRUE),
-                                  conditionalPanel(condition="input.by_albums==true",
-                                                   checkboxInput("album_images", "Use album covers as points", FALSE),
-                                                   conditionalPanel(condition="input.album_images==true",
-                                                                    sliderInput("slider", "Point size",
-                                                    min = 0.001, max = 0.5, value = .03))),
-                                  checkboxInput("show_margins", "Show distributions", FALSE),
-                                  conditionalPanel(condition="input.show_margins==true",
-                                                   selectInput("margin_type", "Type", list("Density", "Histogram"), "Density")),
-                                  checkboxInput("smooth", "Add smoothing"),
-                                  conditionalPanel(condition="input.smooth==true",
-                                                   selectInput("smooth_type", "Smoothing function",
-                                                               list("Linear"="lm", "Loess"="loess"), selected = "Linear")),
-                                  hr(), # Add a horizontal rule
-                                  checkboxGroupInput(
-                                    "Album", "Filter by album",
-                                    choices = unique(df_trackviz$Album),
-                                    selected = unique(df_trackviz$Album)
-                                  )
-                                )
+                            column(3,
+                                   h6("Summary Statistics", align="center"),
+                                   div(DT::DTOutput("table"), style="font-size:75%")
+                                   )
                           )),
                  tabPanel("Barplot",
                           page_sidebar(
@@ -318,6 +322,70 @@ server <- function(input, output, session) {
                   options = list(dom = 't'))
   })
 
+
+  # Reactive model fitting function
+  fit <- reactive({
+    req(input$yvar, input$xvar)  # Ensure both inputs are selected
+
+    # Prevent fitting a model if x and y variables are identical
+    if (input$yvar == input$xvar) {
+      print("Warning: Y and X variables are identical.")
+      return(NULL)  # Returning NULL to handle identical variables gracefully
+    }
+
+    # formula <- !!input$yvar ~ !!input$xvar
+    # print(formula)
+
+    # Try fitting the model; handle errors gracefully
+    tryCatch({
+      lm(subsetted()[[input$yvar]] ~ subsetted()[[input$xvar]], data = subsetted())
+    }, error = function(e) {
+      print(paste("Error in model fitting:", e$message))
+      NULL
+    })
+  })
+
+  # Generate the regression table output
+  output$regression_table <- renderDT({
+    req(fit())  # Ensure the model fit is valid
+    print(fit())
+    # If model is NULL (e.g., identical x and y), show message
+    if (is.null(fit())) {
+      return(datatable(data.frame(Message = "Regression model could not be fit. Check your variable selections.")))
+    }
+
+    title <- paste("Effect of <strong>", input$xvar, "</strong> on <strong>", input$yvar, "</strong>")
+
+    # Tidy the model output and select only the necessary columns
+    tidy_fit <- broom::tidy(fit(), conf.int = TRUE) %>%
+      #filter(term != "Intercept") %>%  # Show only the row for input$xvar
+      select(term, estimate, std.error, conf.low, conf.high, p.value) %>%
+      mutate(estimate=round(estimate, 2),
+             std.error=round(std.error, 2),
+             conf.low=round(conf.low, 2),
+             conf.high=round(conf.high, 2),
+             p.value=round(p.value, 3))
+
+
+    tidy_fit$term <- c("Intercept", as.character(input$xvar))
+
+
+    # Render the table with customized column names
+    datatable(
+      tidy_fit,
+      colnames = c("Term", "Estimate", "Std. Error", "Lower 95% CI", "Upper 95% CI", "p-value"),
+      class = 'compact',  # Makes the table more compact
+      options = list(
+        dom = 't',         # Display only the table without any controls
+        pageLength = nrow(tidy_fit),  # Show all rows
+        autoWidth = TRUE
+      ),
+      rownames=F,
+      caption=HTML(title)
+    )
+  })
+
+
   # Bar tab elements
 
   subsetted_bar <- reactive({
@@ -436,7 +504,6 @@ server <- function(input, output, session) {
 # TODO
 # input slider causing weird behavior
 # words too small in cloud
-# Eugene lyrics
 # regression tool
 # position vs. loudness and tempo regression
 
